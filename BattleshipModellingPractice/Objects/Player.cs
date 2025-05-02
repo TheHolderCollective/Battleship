@@ -1,13 +1,12 @@
-﻿using BattleshipModellingPractice.Extensions;
-using BattleshipModellingPractice.Objects.Boards;
-using BattleshipModellingPractice.Objects.Ships;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using BattleshipGame.Objects.Boards;
+using BattleshipGame.Objects.Ships;
+using BattleshipGame.Extensions;
 
-namespace BattleshipModellingPractice.Objects
+namespace BattleshipGame.Objects
 {
     public class Player
     {
@@ -15,6 +14,12 @@ namespace BattleshipModellingPractice.Objects
         public GameBoard GameBoard { get; set; }
         public FiringBoard FiringBoard { get; set; }
         public List<Ship> Ships { get; set; }
+
+        // new additions
+        public string FiredShot { get; set; }
+        public string ReceivedShot { get; set; }
+
+        //
         public bool HasLost
         {
             get
@@ -38,13 +43,14 @@ namespace BattleshipModellingPractice.Objects
             FiringBoard = new FiringBoard();
         }
 
+        // TODO Add code to output the boards separately so that they can be displayed using the Display class
         public void OutputBoards()
         {
             Console.WriteLine(Name);
             Console.WriteLine("Own Board:                          Firing Board:");
-            for(int row = 1; row <= 10; row++)
+            for (int row = 1; row <= 10; row++)
             {
-                for(int ownColumn = 1; ownColumn <= 10; ownColumn++)
+                for (int ownColumn = 1; ownColumn <= 10; ownColumn++)
                 {
                     Console.Write(GameBoard.Panels.At(row, ownColumn).Status + " ");
                 }
@@ -71,7 +77,7 @@ namespace BattleshipModellingPractice.Objects
                 bool isOpen = true;
                 while (isOpen)
                 {
-                    var startcolumn = rand.Next(1,11);
+                    var startcolumn = rand.Next(1, 11);
                     var startrow = rand.Next(1, 11);
                     int endrow = startrow, endcolumn = startcolumn;
                     var orientation = rand.Next(1, 101) % 2; //0 for Horizontal
@@ -93,7 +99,7 @@ namespace BattleshipModellingPractice.Objects
                     }
 
                     //We cannot place ships beyond the boundaries of the board
-                    if(endrow > 10 || endcolumn > 10)
+                    if (endrow > 10 || endcolumn > 10)
                     {
                         isOpen = true;
                         continue;
@@ -101,13 +107,13 @@ namespace BattleshipModellingPractice.Objects
 
                     //Check if specified panels are occupied
                     var affectedPanels = GameBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
-                    if(affectedPanels.Any(x=>x.IsOccupied))
+                    if (affectedPanels.Any(x => x.IsOccupied))
                     {
                         isOpen = true;
                         continue;
                     }
 
-                    foreach(var panel in affectedPanels)
+                    foreach (var panel in affectedPanels)
                     {
                         panel.OccupationType = ship.OccupationType;
                     }
@@ -129,10 +135,11 @@ namespace BattleshipModellingPractice.Objects
             {
                 coords = RandomShot();
             }
-            Console.WriteLine(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
+            // Console.WriteLine(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
+            FiredShot = String.Format(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
+
             return coords;
         }
-
 
         private Coordinates RandomShot()
         {
@@ -153,25 +160,35 @@ namespace BattleshipModellingPractice.Objects
         public ShotResult ProcessShot(Coordinates coords)
         {
             var panel = GameBoard.Panels.At(coords.Row, coords.Column);
-            if(!panel.IsOccupied)
+            var shotResponse = new StringBuilder();
+
+            if (!panel.IsOccupied)
             {
-                Console.WriteLine(Name + " says: \"Miss!\"");
+                //Console.WriteLine(Name + " says: \"Miss!\"");
+                ReceivedShot = String.Format(Name + " says: \"Miss!\""); //new
+
                 return ShotResult.Miss;
             }
             var ship = Ships.First(x => x.OccupationType == panel.OccupationType);
             ship.Hits++;
-            Console.WriteLine(Name + " says: \"Hit!\"");
+
+            // Console.WriteLine(Name + " says: \"Hit!\"");
+            shotResponse.Append(Name + " says: \"Hit!\""); //new
+
             if (ship.IsSunk)
             {
-                Console.WriteLine(Name + " says: \"You sunk my " + ship.Name + "!\"");
+                // Console.WriteLine(Name + " says: \"You sunk my " + ship.Name + "!\"");
+                shotResponse.Append("\n" + Name + " says: \"You sunk my " + ship.Name + "!\""); //new
             }
+
+            ReceivedShot = shotResponse.ToString(); // new
             return ShotResult.Hit;
         }
 
         public void ProcessShotResult(Coordinates coords, ShotResult result)
         {
             var panel = FiringBoard.Panels.At(coords.Row, coords.Column);
-            switch(result)
+            switch (result)
             {
                 case ShotResult.Hit:
                     panel.OccupationType = OccupationType.Hit;

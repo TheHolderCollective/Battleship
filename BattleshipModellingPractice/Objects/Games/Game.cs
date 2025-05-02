@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BattleshipModellingPractice.Objects.Games
+
+namespace BattleshipGame.Objects.Games
 {
     public class Game
     {
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
+
+       // private GameDisplay gameDisplay;
 
         public Game()
         {
@@ -21,6 +20,8 @@ namespace BattleshipModellingPractice.Objects.Games
 
             Player1.OutputBoards();
             Player2.OutputBoards();
+
+            //gameDisplay = new GameDisplay(Player1, Player2);
         }
 
         public void PlayRound()
@@ -46,6 +47,8 @@ namespace BattleshipModellingPractice.Objects.Games
                 PlayRound();
             }
 
+            // THC: Display code has to be integrated here
+            // TODO Add code to utilise display class to output the boards
             Player1.OutputBoards();
             Player2.OutputBoards();
 

@@ -1,11 +1,8 @@
-﻿using BattleshipModellingPractice.Extensions;
-using System;
+﻿using BattleshipGame.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BattleshipModellingPractice.Objects.Boards
+namespace BattleshipGame.Objects.Boards
 {
     /// <summary>
     /// Represents a collection of Panels to show where the player has fired shots, and whether those shots are hits or misses.
@@ -14,25 +11,25 @@ namespace BattleshipModellingPractice.Objects.Boards
     {
         public List<Coordinates> GetOpenRandomPanels()
         {
-            return Panels.Where(x => x.OccupationType == OccupationType.Empty && x.IsRandomAvailable).Select(x=>x.Coordinates).ToList();
+            return Panels.Where(x => x.OccupationType == OccupationType.Empty && x.IsRandomAvailable).Select(x => x.Coordinates).ToList();
         }
 
         public List<Coordinates> GetHitNeighbors()
         {
-            List<Panel> panels = new List<Panel>();
+            List<GameBoardPanel> panels = new List<GameBoardPanel>();
             var hits = Panels.Where(x => x.OccupationType == OccupationType.Hit);
-            foreach(var hit in hits)
+            foreach (var hit in hits)
             {
                 panels.AddRange(GetNeighbors(hit.Coordinates).ToList());
             }
             return panels.Distinct().Where(x => x.OccupationType == OccupationType.Empty).Select(x => x.Coordinates).ToList();
         }
 
-        public List<Panel> GetNeighbors(Coordinates coordinates)
+        public List<GameBoardPanel> GetNeighbors(Coordinates coordinates)
         {
             int row = coordinates.Row;
             int column = coordinates.Column;
-            List<Panel> panels = new List<Panel>();
+            List<GameBoardPanel> panels = new List<GameBoardPanel>();
             if (column > 1)
             {
                 panels.Add(Panels.At(row, column - 1));

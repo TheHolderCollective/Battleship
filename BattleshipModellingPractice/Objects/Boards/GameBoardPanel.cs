@@ -1,22 +1,18 @@
-﻿using BattleshipModellingPractice.Extensions;
-using System;
-using System.Collections.Generic;
+﻿using BattleshipGame;
+using BattleshipGame.Extensions;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BattleshipModellingPractice.Objects.Boards
+namespace BattleshipGame.Objects.Boards
 {
     /// <summary>
     /// The basic class for this modelling practice.  Represents a single square on the game board.
     /// </summary>
-    public class Panel
+    public class GameBoardPanel
     {
         public OccupationType OccupationType { get; set; }
         public Coordinates Coordinates { get; set; }
 
-        public Panel(int row, int column)
+        public GameBoardPanel(int row, int column)
         {
             Coordinates = new Coordinates(row, column);
             OccupationType = OccupationType.Empty;

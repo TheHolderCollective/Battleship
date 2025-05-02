@@ -1,40 +1,87 @@
-﻿using BattleshipModellingPractice.Objects;
-using BattleshipModellingPractice.Objects.Games;
+﻿using BattleshipGame.Objects;
+using BattleshipGame.Objects.Display;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BattleshipModellingPractice
+namespace BattleshipGame
 {
     class Program
     {
         static void Main(string[] args)
         {
-            int player1Wins = 0, player2Wins = 0;
+            Player Player1 = new Player("Amy");
+            Player Player2 = new Player("Vince");
 
-            Console.WriteLine("How many games do you want to play?");
-            var numGames = int.Parse(Console.ReadLine());
+            Player1.PlaceShips();
+            Player2.PlaceShips();
 
-            for (int i = 0; i < numGames; i++)
+            int hitCount = 0;
+
+
+            while (hitCount < 20)
             {
-                Game game1 = new Game();
-                game1.PlayToEnd();
-                if(game1.Player1.HasLost)
+                var coordinates = Player1.FireShot();
+                var result = Player2.ProcessShot(coordinates);
+                Player1.ProcessShotResult(coordinates, result);
+
+                if (result == ShotResult.Hit)
                 {
-                    player2Wins++;
+                    hitCount++;
                 }
-                else
+
+                if (!Player2.HasLost) //If player 2 already lost, we can't let them take another turn.
                 {
-                    player1Wins++;
+                    coordinates = Player2.FireShot();
+                    result = Player1.ProcessShot(coordinates);
+                    Player2.ProcessShotResult(coordinates, result);
                 }
+
+                if (result == ShotResult.Hit)
+                {
+                    hitCount++;
+                }
+
             }
 
-            Console.WriteLine("Player 1 Wins: " + player1Wins.ToString());
-            Console.WriteLine("Player 2 Wins: " + player2Wins.ToString());
-            Console.ReadLine();
-           
+
+            GameDisplay gameDisplay = new GameDisplay(Player1, Player2);
+
+            try
+            {
+                gameDisplay.ShowDisplay();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.GetType()}: {ex.Message}");
+                throw;
+            }
+
+
+
+            #region Original code for main
+            //int player1Wins = 0, player2Wins = 0;
+
+            //Console.WriteLine("How many games do you want to play?");
+            //var numGames = int.Parse(Console.ReadLine());
+
+            //for (int i = 0; i < numGames; i++)
+            //{
+            //    Game game1 = new Game();
+            //    game1.PlayToEnd();
+            //    if(game1.Player1.HasLost)
+            //    {
+            //        player2Wins++;
+            //    }
+            //    else
+            //    {
+            //        player1Wins++;
+            //    }
+            //}
+
+            //Console.WriteLine("Player 1 Wins: " + player1Wins.ToString());
+            //Console.WriteLine("Player 2 Wins: " + player2Wins.ToString());
+            //Console.ReadLine();
+
+            #endregion
         }
     }
 }

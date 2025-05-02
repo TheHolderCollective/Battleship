@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace BattleshipModellingPractice
+namespace BattleshipGame
 {
     public enum OccupationType
     {
@@ -38,5 +33,18 @@ namespace BattleshipModellingPractice
     {
         Miss,
         Hit
+    }
+
+    public enum LayoutSize
+    {
+        Title = 10,
+        Gameboard = 22,
+        Result = 6
+    }
+
+    public enum WindowDimensions
+    {
+        Width = 120,
+        Height = 30
     }
 }

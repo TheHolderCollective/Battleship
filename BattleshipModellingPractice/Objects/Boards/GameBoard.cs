@@ -1,27 +1,22 @@
-﻿using BattleshipModellingPractice.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace BattleshipModellingPractice.Objects.Boards
+namespace BattleshipGame.Objects.Boards
 {
     /// <summary>
     /// Represents a collection of Panels to provide a Player with their Game Board (e.g. where their ships are placed).
     /// </summary>
     public class GameBoard
     {
-        public List<Panel> Panels { get; set; }
+        public List<GameBoardPanel> Panels { get; set; }
 
         public GameBoard()
         {
-            Panels = new List<Panel>();
+            Panels = new List<GameBoardPanel>();
             for (int i = 1; i <= 10; i++)
             {
                 for (int j = 1; j <= 10; j++)
                 {
-                    Panels.Add(new Panel(i, j));
+                    Panels.Add(new GameBoardPanel(i, j));
                 }
             }
         }

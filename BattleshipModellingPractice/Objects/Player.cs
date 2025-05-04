@@ -18,7 +18,8 @@ namespace BattleshipGame.Objects
         // new additions
         public string FiredShot { get; set; }
         public string ReceivedShot { get; set; }
-
+        public string ShipStatus { get; set; }
+        public int RoundNumber { get; set; }
         //
         public bool HasLost
         {
@@ -41,9 +42,44 @@ namespace BattleshipGame.Objects
             };
             GameBoard = new GameBoard();
             FiringBoard = new FiringBoard();
+
+            RoundNumber = 0; // new
         }
 
-        // TODO Add code to output the boards separately so that they can be displayed using the Display class
+        public string[,] OutputGameBoard()
+        {
+            int boardWidth = (int) BoardDimensions.Width;
+            int boardHeight = (int) BoardDimensions.Height;
+
+            string[,] gameBoard = new string[boardWidth, boardHeight];
+
+            for (int row = 1; row <= boardWidth; row++)
+            {
+                for (int height = 1; height <= boardHeight; height++)
+                {
+                    gameBoard[row - 1, height - 1] = GameBoard.Panels.At(row, height).Status + "  ";
+                }
+            }
+            return gameBoard;
+        }
+        public string[,] OutputFiringBoard()
+        {
+            int boardWidth = (int) BoardDimensions.Width;
+            int boardHeight = (int) BoardDimensions.Height;
+
+            string[,] firingBoard = new string[boardWidth, boardHeight];
+
+            for (int row = 1; row <= boardWidth; row++)
+            {
+                for (int height = 1; height <= boardHeight; height++)
+                {
+                    firingBoard[row - 1, height - 1] = FiringBoard.Panels.At(row, height).Status + "  ";
+                }
+            }
+            return firingBoard;
+
+        }
+
         public void OutputBoards()
         {
             Console.WriteLine(Name);
@@ -124,6 +160,10 @@ namespace BattleshipGame.Objects
 
         public Coordinates FireShot()
         {
+            // new
+            RoundNumber++;
+            //
+
             //If there are hits on the board with neighbors which don't have shots, we should fire at those first.
             var hitNeighbors = FiringBoard.GetHitNeighbors();
             Coordinates coords;
@@ -136,6 +176,7 @@ namespace BattleshipGame.Objects
                 coords = RandomShot();
             }
             // Console.WriteLine(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
+            //FiredShot = String.Format("Round " + RoundNumber + " - " + Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
             FiredShot = String.Format(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
 
             return coords;
@@ -160,28 +201,27 @@ namespace BattleshipGame.Objects
         public ShotResult ProcessShot(Coordinates coords)
         {
             var panel = GameBoard.Panels.At(coords.Row, coords.Column);
-            var shotResponse = new StringBuilder();
-
+            ShipStatus = String.Empty;
+            
             if (!panel.IsOccupied)
             {
-                //Console.WriteLine(Name + " says: \"Miss!\"");
                 ReceivedShot = String.Format(Name + " says: \"Miss!\""); //new
+                GameBoard.Panels.At(coords.Row, coords.Column).OccupationType = OccupationType.Miss; // new -- update playerboard
 
                 return ShotResult.Miss;
             }
             var ship = Ships.First(x => x.OccupationType == panel.OccupationType);
             ship.Hits++;
 
-            // Console.WriteLine(Name + " says: \"Hit!\"");
-            shotResponse.Append(Name + " says: \"Hit!\""); //new
+            ReceivedShot = String.Format(Name + " says: \"Hit!\"");
+            //new -- update playerboard
+            GameBoard.Panels.At(coords.Row, coords.Column).OccupationType = OccupationType.Hit;
 
             if (ship.IsSunk)
             {
-                // Console.WriteLine(Name + " says: \"You sunk my " + ship.Name + "!\"");
-                shotResponse.Append("\n" + Name + " says: \"You sunk my " + ship.Name + "!\""); //new
+                ShipStatus = String.Format(Name + " says: \"You sunk my " + ship.Name + "!\""); //new
             }
 
-            ReceivedShot = shotResponse.ToString(); // new
             return ShotResult.Hit;
         }
 

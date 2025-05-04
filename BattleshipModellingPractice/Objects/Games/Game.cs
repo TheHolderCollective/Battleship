@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace BattleshipGame.Objects.Games
 {
     public class Game
@@ -48,7 +47,6 @@ namespace BattleshipGame.Objects.Games
             }
 
             // THC: Display code has to be integrated here
-            // TODO Add code to utilise display class to output the boards
             Player1.OutputBoards();
             Player2.OutputBoards();
 

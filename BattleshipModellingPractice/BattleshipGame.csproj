@@ -60,15 +60,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums.cs" />
+    <Compile Include="Enums &amp; Constants\Enums.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\PanelExtensions.cs" />
-    <Compile Include="GameConstants.cs" />
+    <Compile Include="Enums &amp; Constants\GameConstants.cs" />
     <Compile Include="Objects\Boards\Coordinates.cs" />
     <Compile Include="Objects\Boards\FiringBoard.cs" />
     <Compile Include="Objects\Boards\GameBoard.cs" />
     <Compile Include="Objects\Boards\GameBoardPanel.cs" />
     <Compile Include="Objects\Display\GameDisplay.cs" />
+    <Compile Include="Objects\Display\GameDisplay.Helpers.cs" />
     <Compile Include="Objects\Games\Game.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\Ships\Battleship.cs" />
@@ -82,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Objects\Display\GameDisplay.Layouts.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

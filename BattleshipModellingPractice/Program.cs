@@ -8,6 +8,8 @@ namespace BattleshipGame
     {
         static void Main(string[] args)
         {
+            #region Code to test GameDisplay class fucntionality
+
             Player Player1 = new Player("Amy");
             Player Player2 = new Player("Vince");
 
@@ -15,6 +17,7 @@ namespace BattleshipGame
             Player2.PlaceShips();
 
             int hitCount = 0;
+            int roundNumber1, roundNumber2;
 
 
             while (hitCount < 20)
@@ -42,11 +45,16 @@ namespace BattleshipGame
 
             }
 
+            //roundNumber1 = Player1.RoundNumber;
+            //roundNumber2 = Player2.RoundNumber;
 
             GameDisplay gameDisplay = new GameDisplay(Player1, Player2);
 
             try
             {
+                //var gameBoard = Player1.OutputGameBoard();
+                //Console.WriteLine(gameBoard.ToString());
+                //Console.ReadKey();
                 gameDisplay.ShowDisplay();
             }
             catch (Exception ex)
@@ -55,7 +63,7 @@ namespace BattleshipGame
                 throw;
             }
 
-
+            #endregion
 
             #region Original code for main
             //int player1Wins = 0, player2Wins = 0;

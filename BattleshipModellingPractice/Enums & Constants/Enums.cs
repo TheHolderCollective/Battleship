@@ -39,7 +39,7 @@ namespace BattleshipGame
     {
         Title = 10,
         Gameboard = 22,
-        Result = 6
+        GameInfo = 8
     }
 
     public enum WindowDimensions
@@ -47,4 +47,20 @@ namespace BattleshipGame
         Width = 120,
         Height = 30
     }
+
+    public enum DisplayMode
+    {
+        MainMenu,
+        ShipPlacement,
+        GamePlay,
+        DataEntry
+    }
+
+    public enum BoardDimensions
+    {
+        Width = 10,
+        Height = 10
+    }
+
+
 }

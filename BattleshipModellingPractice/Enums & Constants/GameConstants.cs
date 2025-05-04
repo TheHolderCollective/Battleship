@@ -14,11 +14,18 @@
             }
         }
 
-        public static decimal WindowScaleFactor
+        public static decimal WindowWidthScaleFactor
         {
             get
             {
                 return 1.27M;
+            }
+        }
+        public static decimal WindowHeightScaleFactor
+        {
+            get
+            {
+                return 1.35M;
             }
         }
     }

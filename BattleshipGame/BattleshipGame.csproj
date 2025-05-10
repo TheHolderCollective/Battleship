@@ -7,8 +7,8 @@
     <ProjectGuid>{DC5A4B6F-FD2F-438C-8D0B-6CCD5F06E1DC}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BattleshipModellingPractice</RootNamespace>
-    <AssemblyName>BattleshipModellingPractice</AssemblyName>
+    <RootNamespace>BattleshipGame</RootNamespace>
+    <AssemblyName>BattleshipGame</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -22,7 +22,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>5</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -70,6 +70,7 @@
     <Compile Include="Objects\Boards\GameBoardPanel.cs" />
     <Compile Include="Objects\Display\GameDisplay.cs" />
     <Compile Include="Objects\Display\GameDisplay.Helpers.cs" />
+    <Compile Include="Objects\Display\GameDisplay.Modes.cs" />
     <Compile Include="Objects\Games\Game.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\Ships\Battleship.cs" />

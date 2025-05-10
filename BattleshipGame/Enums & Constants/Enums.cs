@@ -50,10 +50,11 @@ namespace BattleshipGame
 
     public enum DisplayMode
     {
+        DataEntry,
+        Demo,
+        GamePlay,
         MainMenu,
         ShipPlacement,
-        GamePlay,
-        DataEntry
     }
 
     public enum BoardDimensions

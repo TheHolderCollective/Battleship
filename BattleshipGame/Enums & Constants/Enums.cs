@@ -62,6 +62,4 @@ namespace BattleshipGame
         Width = 10,
         Height = 10
     }
-
-
 }

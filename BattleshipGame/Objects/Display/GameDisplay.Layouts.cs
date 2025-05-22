@@ -1,21 +1,30 @@
 ﻿using Spectre.Console;
 using System;
+using BattleshipGame.Objects.GameMenu;
 using System.Data.SqlTypes;
 
 namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-        private static Layout CreateLayout()
+        private static Layout CreateLayouts()
         {
             var titleLayout = CreateDefaultTitleLayout();
             var startScreenLayout = CreateStartScreenLayout();
-            var boardLayout = CreateGamePlayLayout();
-            var gameInfoLayout = CreateGameInfoLayout();
+            var boardLayout = CreateGameBoardLayout();         
+            var shipPlacementLayout = CreateShipPlacementLayout();
+            var demoBoardlayout = CreateDemoLayout();
 
-            var gameLayout = new Layout().SplitRows(titleLayout, boardLayout, startScreenLayout, gameInfoLayout);
-
+            var gameLayout = new Layout().SplitRows(titleLayout, boardLayout, startScreenLayout, shipPlacementLayout, demoBoardlayout);
             return gameLayout;
+        }
+
+        private void DeactivateAllLayouts()
+        {
+            gameLayout["StartScreen"].Invisible();
+            gameLayout["GameBoard"].Invisible();
+            gameLayout["ShipPlacementBoard"].Invisible();
+            gameLayout["DemoBoard"].Invisible();
         }
 
         #region Game Title
@@ -35,22 +44,63 @@ namespace BattleshipGame.Objects.Display
 
             return titleLayout;
         }
+
         #endregion
 
-        #region Gameplay 
-        private static Layout CreateGamePlayLayout()
+
+        #region Main Layouts
+        private static Layout CreateStartScreenLayout()
+        {
+
+            var mainMenuLayout = CreateMainMenuLayout();
+            var menuLeftBorderLayout = CreateMenuBorderLayout("MenuLeftBorder");
+            var menuRightBorderLayout = CreateMenuBorderLayout("MenuRightBorder");
+            var footerLayout = CreateFooterLayout();
+
+            var startScreenLayout = new Layout("StartScreen").SplitRows(new Layout("Menu").SplitColumns(menuLeftBorderLayout, mainMenuLayout, menuRightBorderLayout), footerLayout);
+            return startScreenLayout;
+        }
+        private static Layout CreateGameBoardLayout()
+        {
+            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1);
+            var firingBoardLayout = CreateFiringBoardLayout(gamePlayer1, gamePlayer2.Name);
+            var statusBoardLayout = CreateStatusBoardsLayout();
+            var gameInfoLayout = CreateGameInfoLayout();
+
+            var playerBoardsLayout = new Layout("PlayerBoards").SplitColumns(playerBoardLayout, firingBoardLayout, statusBoardLayout);
+
+            playerBoardsLayout.Size((int)LayoutSize.Gameboard);
+
+            var boardLayout = new Layout("GameBoard").SplitRows(playerBoardsLayout, gameInfoLayout);
+            return boardLayout;
+        }
+
+        private static Layout CreateShipPlacementLayout()
+        {
+            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1);
+            var shipSelectionMenuLayout = CreateShipSelectionMenuLayout();
+
+            var shipPlacementLayout = new Layout("ShipPlacementBoard").SplitColumns(playerBoardLayout, shipSelectionMenuLayout);
+          
+            return shipPlacementLayout;
+
+        }
+
+        private static Layout CreateDemoLayout()
         {
             var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1);
             var firingBoardLayout = CreateFiringBoardLayout(gamePlayer1, gamePlayer2.Name);
             var statusBoardLayout = CreateStatusBoardsLayout();
 
-            var shipPlacementLayout = CreateShipPlacementLayout();
+            var demoBoardLayout = new Layout("DemoBoard").SplitColumns(playerBoardLayout, firingBoardLayout, statusBoardLayout);
 
-            var boardLayout = new Layout("GameBoard").SplitColumns(playerBoardLayout, shipPlacementLayout,firingBoardLayout, statusBoardLayout);
-            boardLayout.Size((int)LayoutSize.Gameboard);
-
-            return boardLayout;
+            demoBoardLayout.Size((int)LayoutSize.Gameboard);
+            return demoBoardLayout;
+           
         }
+        #endregion
+
+        #region Gameplay 
         private static Layout CreatePlayerBoardLayout(Player player)
         {
 
@@ -150,26 +200,15 @@ namespace BattleshipGame.Objects.Display
         #endregion
 
         // TODO update texts used for ships
-        #region Start Screen
-        private static Layout CreateStartScreenLayout()
-        {
-
-            var mainMenuLayout = CreateMainMenuLayout();
-            var menuLeftBorderLayout = CreateMenuBorderLayout("MenuLeftBorder");
-            var menuRightBorderLayout = CreateMenuBorderLayout("MenuRightBorder");
-            var footerLayout = CreateFooterLayout();
-
-            var startScreenLayout = new Layout("StartScreen").SplitRows(new Layout("Menu").SplitColumns(menuLeftBorderLayout, mainMenuLayout, menuRightBorderLayout), footerLayout);
-            return startScreenLayout;
-        }
+        #region Start Screen Sub Layouts
+       
         private static Layout CreateMainMenuLayout()
         {
+            mainMenu = new Menu(GameConstants.MainMenu);
+           
             var menuLayout = new Layout("MainMenu").MinimumSize(80);
+            menuLayout.Update(mainMenu.GetMenuAsPanel());
 
-            var menuText = new Markup("\n\n\nPlay Game \n\nRun Demo \n\n  Add Player Info \n\nExit Game").Centered(); // update this
-            var menuPanel = new Panel(menuText).Expand().Header("").HeaderAlignment(Justify.Center);
-
-            menuLayout.Update(menuPanel);
             return menuLayout;
         }
         private static Layout CreateMenuBorderLayout(string borderName)
@@ -198,10 +237,10 @@ namespace BattleshipGame.Objects.Display
         #endregion
 
         #region Ship Selection/Placement
-        private static Layout CreateShipPlacementLayout()
+
+        private static Layout CreateShipSelectionMenuLayout()
         {
             var shipPlacementLayout = new Layout("ShipPlacementBoard").MinimumSize(60);
-
             var shipPlacementText = new Markup("\n\n\n\n[invert]Aircraft Carrier[/] \n\nBattleship \n\nCruiser \n\nDestroyer \n\nSubmarine").Centered(); // update this
             var shipPlacementPanel = new Panel(shipPlacementText).Expand().Header("Place Ships").HeaderAlignment(Justify.Center);
 
@@ -209,6 +248,8 @@ namespace BattleshipGame.Objects.Display
             return shipPlacementLayout;
 
         }
+
+
         #endregion
     }
 }

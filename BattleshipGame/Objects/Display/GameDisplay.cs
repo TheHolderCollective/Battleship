@@ -1,4 +1,5 @@
-﻿using Spectre.Console;
+﻿using BattleshipGame.Objects.GameMenu;
+using Spectre.Console;
 using System;
 
 namespace BattleshipGame.Objects.Display
@@ -9,7 +10,9 @@ namespace BattleshipGame.Objects.Display
         private static Layout gameLayout;
         private static Player gamePlayer1;
         private static Player gamePlayer2;
-        private DisplayMode displayMode;
+
+        private static DisplayMode displayMode;
+        private static Menu mainMenu;
 
         public GameDisplay(Player player1, Player player2)
         {
@@ -20,9 +23,8 @@ namespace BattleshipGame.Objects.Display
             displayMode = DisplayMode.MainMenu;
 
             // for working on demo use:
-            displayMode = DisplayMode.Demo;
-
-            gameLayout = CreateLayout();
+            //displayMode = DisplayMode.Demo;
+            gameLayout = CreateLayouts();
         }
         public void ShowDisplay()
         {
@@ -64,68 +66,48 @@ namespace BattleshipGame.Objects.Display
                        continuePlaying = false;    
                     }
 
-                    if (displayMode == DisplayMode.MainMenu)
-                    {
-                        ProcessMainMenuInputs(keyPressed);
-                    }
-                    else
-                    {
-                        ProcessOtherInputs(keyPressed);
-                    }
+                    ProcessPlayerInputs(keyPressed);
+                    
                     ctx.Refresh();
                 }
             }
         }
-
-        private void ProcessMainMenuInputs(ConsoleKey keyPressed)
+        private void ProcessPlayerInputs(ConsoleKey keyPressed)
         {
             switch (keyPressed)
             {
-                case ConsoleKey.LeftArrow:
-                    gameLayout["Title"].Update(CreateTitleLayout("[red]"));
-                    break;
-                case ConsoleKey.UpArrow:
-                    gameLayout["Title"].Update(CreateTitleLayout("[green]"));
-                    break;
-                case ConsoleKey.RightArrow:
-                    gameLayout["Title"].Update(CreateTitleLayout("[blue]"));
-                    break;
-                case ConsoleKey.DownArrow:
-                    gameLayout["Title"].Update(CreateTitleLayout("[purple]"));
-                    break;
-                case ConsoleKey.Backspace:
-                    displayMode = DisplayMode.GamePlay;
-                    DeactivateMainMenuMode();
-                    ActivateGamePlayMode();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void ProcessOtherInputs(ConsoleKey keyPressed)
-        {
-            switch (keyPressed)
-            {
-                case ConsoleKey.D:
+                case ConsoleKey.F1:
                     displayMode = DisplayMode.Demo;
                     ActivateDemoMode();
                     break;
-                case ConsoleKey.Backspace:
+                case ConsoleKey.F2:
                     displayMode = DisplayMode.GamePlay;
                     ActivateGamePlayMode();
                     break;
-                case ConsoleKey.Tab:
+                case ConsoleKey.F3:
                     displayMode = DisplayMode.ShipPlacement;
                     ActivateShipPlacementMode();
                     break;
-                case ConsoleKey.Spacebar:
+                case ConsoleKey.F4:
                     displayMode = DisplayMode.MainMenu;
                     ActivateMainMenuMode();
+                    break;
+                case ConsoleKey.UpArrow:
+                    if (displayMode == DisplayMode.MainMenu)
+                    {
+                        MainMenuSelectPrevious();
+                    }
+                    break;
+                case ConsoleKey.DownArrow:
+                    if (displayMode == DisplayMode.MainMenu)
+                    {
+                        MainMenuSelectNext();
+                    }
                     break;
                 default:
                     break;
             }
         }
+
     }
 }

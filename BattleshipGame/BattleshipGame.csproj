@@ -70,8 +70,11 @@
     <Compile Include="Objects\Boards\GameBoardPanel.cs" />
     <Compile Include="Objects\Display\GameDisplay.cs" />
     <Compile Include="Objects\Display\GameDisplay.Helpers.cs" />
+    <Compile Include="Objects\Display\GameDisplay.Menus.cs" />
     <Compile Include="Objects\Display\GameDisplay.Modes.cs" />
     <Compile Include="Objects\Games\Game.cs" />
+    <Compile Include="Objects\Menu\Menu.cs" />
+    <Compile Include="Objects\Menu\MenuItem.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\Ships\Battleship.cs" />
     <Compile Include="Objects\Ships\Carrier.cs" />

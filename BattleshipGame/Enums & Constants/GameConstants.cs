@@ -50,6 +50,7 @@ namespace BattleshipGame
                        @"`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/`\_\/_/  " + "\n";
             }
         }
+
         public static decimal WindowWidthScaleFactor
         {
             get
@@ -64,5 +65,14 @@ namespace BattleshipGame
                 return 1.35M;
             }
         }
+
+        public static readonly string[] MainMenu =
+        {
+            "Play Game",
+            "Run Demo",
+            "Add Player Info",
+            "Exit Game"
+        };
+
     }
 }

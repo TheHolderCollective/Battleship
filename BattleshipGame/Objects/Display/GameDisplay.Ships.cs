@@ -15,7 +15,6 @@ namespace BattleshipGame.Objects.Display
             gameLayout["ShipPlacementGameBoard"].Update(playerBoardPanel);
         }
 
-
         private ShipType GetShipType(string shipName)
         {
             ShipType shipType;

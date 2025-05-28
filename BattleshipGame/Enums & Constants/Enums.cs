@@ -89,6 +89,14 @@ namespace BattleshipGame
         SelectShip,
         PositionShip
     }
+
+    public enum ShipDirection
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
     public enum BoardDimensions
     {
         Width = 10,

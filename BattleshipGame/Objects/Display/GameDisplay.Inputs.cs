@@ -28,7 +28,7 @@ namespace BattleshipGame.Objects.Display
 			if (mainMenu.SelectedItemName == "Play Game") // change this to use enums
 			{
 				ActivateShipPlacementMode();
-			}
+            }
 		}
 
         private void ProcessCurrentShipMenuSelection()
@@ -49,6 +49,7 @@ namespace BattleshipGame.Objects.Display
             {
                 //ActivateShipPlacementMode();
                 UpdatePlayerBoardForShipPlacement();
+                shipPlacementMode = ShipPlacementMode.PositionShip;
             }
 
 		}
@@ -113,7 +114,10 @@ namespace BattleshipGame.Objects.Display
                         case ShipPlacementMode.SelectShip:
                             ShipMenuSelectPrevious();
                             break;
-                        case ShipPlacementMode.PositionShip:                          
+                        case ShipPlacementMode.PositionShip:
+                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+                            gamePlayer1.MoveShip(selectedShip, ShipDirection.Up);
+                            UpdatePlayerBoardForShipPlacement();
                             break;
                         default:
                             break;
@@ -139,6 +143,59 @@ namespace BattleshipGame.Objects.Display
                             ShipMenuSelectNext();
                             break;
                         case ShipPlacementMode.PositionShip:
+                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+                            gamePlayer1.MoveShip(selectedShip, ShipDirection.Down);
+                            UpdatePlayerBoardForShipPlacement();
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ProcessInputLeftArrowKey(DisplayMode displayMode)
+        {
+            switch (displayMode)
+            {
+                case DisplayMode.GamePlay:
+                    break;
+                case DisplayMode.ShipPlacement:
+                    switch (shipPlacementMode)
+                    {
+                        case ShipPlacementMode.SelectShip:
+                            break;
+                        case ShipPlacementMode.PositionShip:
+                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+                            gamePlayer1.MoveShip(selectedShip, ShipDirection.Left);
+                            UpdatePlayerBoardForShipPlacement();
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void ProcessInputRightArrowKey(DisplayMode displayMode)
+        {
+            switch (displayMode)
+            {
+                case DisplayMode.GamePlay:
+                    break;
+                case DisplayMode.ShipPlacement:
+                    switch (shipPlacementMode)
+                    {
+                        case ShipPlacementMode.SelectShip:
+                            break;
+                        case ShipPlacementMode.PositionShip:
+                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+                            gamePlayer1.MoveShip(selectedShip, ShipDirection.Right);
+                            UpdatePlayerBoardForShipPlacement();
                             break;
                         default:
                             break;

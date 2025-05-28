@@ -106,6 +106,12 @@ namespace BattleshipGame.Objects.Display
                 case ConsoleKey.DownArrow:
                     ProcessInputDownArrowKey(displayMode);
                     break;
+                case ConsoleKey.RightArrow:
+                    ProcessInputRightArrowKey(displayMode);
+                    break;
+                case ConsoleKey.LeftArrow:
+                    ProcessInputLeftArrowKey(displayMode);
+                    break;
                 case ConsoleKey.Enter:
                     ProcessInputEnterKey(displayMode);
                     break;

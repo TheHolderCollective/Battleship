@@ -9,15 +9,26 @@ namespace BattleshipGame.Objects.Boards
     public class ShipPlacements
     {
         public ShipType Type { get; set; }
-        public Coordinates[] shipCoordinates { get; set; } 
+        public ShipOrientation Orientation { get; set; }
+        public Coordinates[] ShipCoordinates { get; set; } 
 
+        public ShipPlacements()
+        {
+
+        }
+        public ShipPlacements(ShipType shipType, ShipOrientation shipOrientation, Coordinates[] shipCoordinates)
+        {
+            Type = shipType;
+            Orientation = shipOrientation;
+            UpdateCoordinates(shipCoordinates);
+        }
         public void UpdateCoordinates(Coordinates[] coordinates)
         {
-            shipCoordinates = new Coordinates[coordinates.Length];
+            ShipCoordinates = new Coordinates[coordinates.Length];
 
             for (int i = 0; i < coordinates.Length; i++)
             {
-                shipCoordinates[i] = new Coordinates(coordinates[i].Row, coordinates[i].Column);
+                ShipCoordinates[i] = new Coordinates(coordinates[i].Row, coordinates[i].Column);
             }
         }
     }

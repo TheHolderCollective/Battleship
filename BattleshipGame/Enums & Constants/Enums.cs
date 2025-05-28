@@ -50,13 +50,45 @@ namespace BattleshipGame
 
     public enum DisplayMode
     {
-        DataEntry,
         Demo,
         GamePlay,
         MainMenu,
         ShipPlacement,
     }
 
+    public enum MainMenuItems
+    {
+        [Description("Play Game")]
+        PlayGame,
+
+        [Description("Run Demo")]
+        RunDemo,
+
+        [Description("Exit Game")]
+        ExitGame
+    }
+
+    public enum ShipType
+    {
+        Carrier,
+        Battleship,
+        Cruiser,
+        Destroyer,
+        Submarine,
+        Unknown
+    }
+
+    public enum ShipOrientation
+    {
+        Horizontal,
+        Vertical
+    }
+
+    public enum ShipPlacementMode
+    {
+        SelectShip,
+        PositionShip
+    }
     public enum BoardDimensions
     {
         Width = 10,

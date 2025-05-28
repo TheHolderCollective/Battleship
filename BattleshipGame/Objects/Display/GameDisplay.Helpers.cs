@@ -6,6 +6,7 @@ namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
+       
         private static string GetRoundResultsSummary(Player player1, Player player2)
         {
             StringBuilder resultsText = new StringBuilder();

@@ -16,6 +16,7 @@ namespace BattleshipGame.Objects
         public List<Ship> Ships { get; set; }
 
         // new additions
+        public List<ShipPlacements> ShipLocations { get; set; }
         public string FiredShot { get; set; }
         public string ReceivedShot { get; set; }
         public string ShipStatus { get; set; }
@@ -33,15 +34,17 @@ namespace BattleshipGame.Objects
         {
             Name = name;
             Ships = new List<Ship>()
-            {
-                new Destroyer(),
-                new Submarine(),
-                new Cruiser(),
+            { // RH: order significant do not change
+                new Carrier(),
                 new Battleship(),
-                new Carrier()
+                new Cruiser(),
+                new Destroyer(),
+                new Submarine()
             };
+
             GameBoard = new GameBoard();
             FiringBoard = new FiringBoard();
+            ShipLocations = new List<ShipPlacements>();
 
             RoundNumber = 0; // new
         }
@@ -80,24 +83,90 @@ namespace BattleshipGame.Objects
 
         }
 
-        public void OutputBoards()
+        /// <summary>
+        /// Places ship at position given by startRow and startCol. Returns true if placement is successful
+        /// </summary>
+        public bool PlaceShip(ShipType shipType, ShipOrientation shipOrientation, int startRow, int startCol)
         {
-            Console.WriteLine(Name);
-            Console.WriteLine("Own Board:                          Firing Board:");
-            for (int row = 1; row <= 10; row++)
+            Ship selectedShip = Ships[(int)shipType];
+
+            if (selectedShip.isPlaced) 
             {
-                for (int ownColumn = 1; ownColumn <= 10; ownColumn++)
-                {
-                    Console.Write(GameBoard.Panels.At(row, ownColumn).Status + " ");
-                }
-                Console.Write("                ");
-                for (int firingColumn = 1; firingColumn <= 10; firingColumn++)
-                {
-                    Console.Write(FiringBoard.Panels.At(row, firingColumn).Status + " ");
-                }
-                Console.WriteLine(Environment.NewLine);
+                return true;
             }
-            Console.WriteLine(Environment.NewLine);
+
+            (int Row, int Col) shipStart = (startRow, startCol);
+            (int Row, int Col) shipEnd = CalculateShipEndPoint(selectedShip, shipOrientation, shipStart.Row, shipStart.Col);
+
+            var affectedPanels = GameBoard.Panels.Range(shipStart.Row, shipStart.Col, shipEnd.Row, shipEnd.Col);
+
+            if (!IsShipWithinBounds(shipEnd.Row, shipEnd.Col) || !IsBoardRangeUnoccupied(affectedPanels))
+            {
+                return false;
+            }
+
+            // update board
+            Coordinates[] shipCoords = new Coordinates[affectedPanels.Count];
+            for (int i = 0; i < affectedPanels.Count; i++)
+            {
+                affectedPanels[i].OccupationType = selectedShip.OccupationType;
+                shipCoords[i] = new Coordinates(affectedPanels[i].Coordinates.Row, affectedPanels[i].Coordinates.Column);
+            }
+
+            ShipPlacements shipLocation = new ShipPlacements();
+            shipLocation.Type = shipType;
+            shipLocation.UpdateCoordinates(shipCoords);
+            ShipLocations.Add(shipLocation);
+
+            selectedShip.isPlaced = true; // check this if there are problems
+            return true; 
+        }
+
+        public (int, int) CalculateShipEndPoint(Ship ship, ShipOrientation shipOrientation ,int startRow, int startCol)
+        {
+            (int Row, int Col) shipEnd = (startRow, startCol);
+
+            if (shipOrientation == ShipOrientation.Horizontal)
+            {
+                for (int i = 1; i < ship.Width; i++)
+                {
+                    shipEnd.Col++;
+                }
+            }
+            else
+            {
+                for (int i = 1; i < ship.Width; i++)
+                {
+                    shipEnd.Row++;
+                }
+            }
+
+            return shipEnd;
+        }
+
+        public bool IsShipWithinBounds(int endRow, int endCol)
+        {
+            if (endRow > (int) BoardDimensions.Height || endCol > (int) BoardDimensions.Width)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool IsBoardRangeUnoccupied(List<GameBoardPanel> selectedPanels)
+        {
+            if (selectedPanels.Any(x => x.IsOccupied))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
         }
 
         public void PlaceShips()
@@ -119,18 +188,18 @@ namespace BattleshipGame.Objects
                     var orientation = rand.Next(1, 101) % 2; //0 for Horizontal
 
                     List<int> panelNumbers = new List<int>();
-                    if (orientation == 0)
+                    if (orientation == (int) ShipOrientation.Horizontal)
                     {
                         for (int i = 1; i < ship.Width; i++)
                         {
-                            endrow++;
+                            endcolumn++;
                         }
                     }
                     else
                     {
                         for (int i = 1; i < ship.Width; i++)
                         {
-                            endcolumn++;
+                            endrow++;
                         }
                     }
 
@@ -239,5 +308,27 @@ namespace BattleshipGame.Objects
                     break;
             }
         }
+
+        #region Defunct -- to be removed
+        public void OutputBoards()
+        {
+            Console.WriteLine(Name);
+            Console.WriteLine("Own Board:                          Firing Board:");
+            for (int row = 1; row <= 10; row++)
+            {
+                for (int ownColumn = 1; ownColumn <= 10; ownColumn++)
+                {
+                    Console.Write(GameBoard.Panels.At(row, ownColumn).Status + " ");
+                }
+                Console.Write("                ");
+                for (int firingColumn = 1; firingColumn <= 10; firingColumn++)
+                {
+                    Console.Write(FiringBoard.Panels.At(row, firingColumn).Status + " ");
+                }
+                Console.WriteLine(Environment.NewLine);
+            }
+            Console.WriteLine(Environment.NewLine);
+        }
+        #endregion
     }
 }

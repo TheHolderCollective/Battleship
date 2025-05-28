@@ -16,5 +16,7 @@
                 return Hits >= Width;
             }
         }
+
+        public bool isPlaced { get; set; }
     }
 }

@@ -10,43 +10,46 @@ namespace BattleshipGame
         {
             #region Code to test GameDisplay class fucntionality
 
-            Player Player1 = new Player("Amy");
-            Player Player2 = new Player("Vince");
+            //Player Player1 = new Player("Amy");
+            //Player Player2 = new Player("Vince");
 
-            Player1.PlaceShips();
-            Player2.PlaceShips();
+            //Player1.PlaceShips();
+            //Player2.PlaceShips();
 
-            int hitCount = 0;
-            int roundNumber1, roundNumber2;
+            //int hitCount = 0;
+            //int roundNumber1, roundNumber2;
 
 
-            while (hitCount < 20)
-            {
-                var coordinates = Player1.FireShot();
-                var result = Player2.ProcessShot(coordinates);
-                Player1.ProcessShotResult(coordinates, result);
+            //while (hitCount < 20)
+            //{
+            //    var coordinates = Player1.FireShot();
+            //    var result = Player2.ProcessShot(coordinates);
+            //    Player1.ProcessShotResult(coordinates, result);
 
-                if (result == ShotResult.Hit)
-                {
-                    hitCount++;
-                }
+            //    if (result == ShotResult.Hit)
+            //    {
+            //        hitCount++;
+            //    }
 
-                if (!Player2.HasLost) //If player 2 already lost, we can't let them take another turn.
-                {
-                    coordinates = Player2.FireShot();
-                    result = Player1.ProcessShot(coordinates);
-                    Player2.ProcessShotResult(coordinates, result);
-                }
+            //    if (!Player2.HasLost) //If player 2 already lost, we can't let them take another turn.
+            //    {
+            //        coordinates = Player2.FireShot();
+            //        result = Player1.ProcessShot(coordinates);
+            //        Player2.ProcessShotResult(coordinates, result);
+            //    }
 
-                if (result == ShotResult.Hit)
-                {
-                    hitCount++;
-                }
+            //    if (result == ShotResult.Hit)
+            //    {
+            //        hitCount++;
+            //    }
 
-            }
+            //}
 
             //roundNumber1 = Player1.RoundNumber;
             //roundNumber2 = Player2.RoundNumber;
+
+            Player Player1 = new Player("Player X");
+            Player Player2 = new Player("Vince");
 
             GameDisplay gameDisplay = new GameDisplay(Player1, Player2);
 

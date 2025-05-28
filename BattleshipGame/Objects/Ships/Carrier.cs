@@ -13,6 +13,7 @@ namespace BattleshipGame.Objects.Ships
             Name = "Aircraft Carrier";
             Width = 5;
             OccupationType = OccupationType.Carrier;
+            isPlaced = false;
         }
     }
 }

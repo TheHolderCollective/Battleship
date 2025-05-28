@@ -68,13 +68,16 @@
     <Compile Include="Objects\Boards\FiringBoard.cs" />
     <Compile Include="Objects\Boards\GameBoard.cs" />
     <Compile Include="Objects\Boards\GameBoardPanel.cs" />
+    <Compile Include="Objects\Boards\ShipPlacements.cs" />
     <Compile Include="Objects\Display\GameDisplay.cs" />
     <Compile Include="Objects\Display\GameDisplay.Helpers.cs" />
     <Compile Include="Objects\Display\GameDisplay.Menus.cs" />
     <Compile Include="Objects\Display\GameDisplay.Modes.cs" />
+    <Compile Include="Objects\Display\GameDisplay.Ships.cs" />
     <Compile Include="Objects\Games\Game.cs" />
     <Compile Include="Objects\Menu\Menu.cs" />
     <Compile Include="Objects\Menu\MenuItem.cs" />
+    <Compile Include="Objects\Menu\MenuItemLists.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\Ships\Battleship.cs" />
     <Compile Include="Objects\Ships\Carrier.cs" />
@@ -88,6 +91,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <Compile Include="Objects\Display\GameDisplay.Layouts.cs" />
+    <Compile Include="Objects\Display\GameDisplay.Inputs.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

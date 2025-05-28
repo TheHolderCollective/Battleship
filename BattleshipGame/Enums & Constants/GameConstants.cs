@@ -1,5 +1,4 @@
-﻿
-namespace BattleshipGame
+﻿namespace BattleshipGame
 {
     public static class GameConstants
     {
@@ -66,13 +65,21 @@ namespace BattleshipGame
             }
         }
 
-        public static readonly string[] MainMenu =
+        public static int DefaultShipX
         {
-            "Play Game",
-            "Run Demo",
-            "Add Player Info",
-            "Exit Game"
-        };
+            get
+            {
+                return 5;
+            }
+        }
+
+        public static int DefaultShipY
+        {
+            get
+            {
+                return 5;
+            }
+        }
 
     }
 }

@@ -8,6 +8,14 @@ namespace BattleshipGame.Objects.GameMenu
     {
         public int CurrentSelection { get; set; }
 
+        public string SelectedItemName
+        {
+            get
+            {
+                return menuItemList[CurrentSelection].ItemName;
+            }
+        }
+
         private List<MenuItem> menuItemList;
         
         public Menu(string[] menuItems)

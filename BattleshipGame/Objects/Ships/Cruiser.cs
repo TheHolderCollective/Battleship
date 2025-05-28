@@ -13,6 +13,7 @@ namespace BattleshipGame.Objects.Ships
             Name = "Cruiser";
             Width = 3;
             OccupationType = OccupationType.Cruiser;
+            isPlaced = false;
         }
     }
 }

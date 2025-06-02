@@ -34,7 +34,6 @@ namespace BattleshipGame.Objects.Display
             // At start up show Main menu
             displayMode = DisplayMode.MainMenu;
             
-            
             // for working on demo use:
             //displayMode = DisplayMode.Demo;
             gameLayout = CreateLayouts();
@@ -58,7 +57,6 @@ namespace BattleshipGame.Objects.Display
             gameDisplay.Start(ctx =>
             {
                 ActivateMainMenuMode();
-                displayMode = DisplayMode.MainMenu;
                 ctx.Refresh();
                 ProcessUpdates(ctx);
             });
@@ -76,7 +74,8 @@ namespace BattleshipGame.Objects.Display
 
                     if (keyPressed == ConsoleKey.Escape)
                     {
-                       continuePlaying = false;    
+                       continuePlaying = false;
+                       continue;
                     }
 
                     ProcessPlayerInputs(keyPressed);
@@ -115,8 +114,8 @@ namespace BattleshipGame.Objects.Display
                 case ConsoleKey.Enter:
                     ProcessInputEnterKey(displayMode);
                     break;
-                case ConsoleKey.Backspace: // returns user to ship menu - temporary for testing
-                    ProcessBackspaceKey(displayMode);
+                case ConsoleKey.Spacebar:
+                    ProcessInputSpacebar(displayMode);
                     break;
                 default:
                     break;

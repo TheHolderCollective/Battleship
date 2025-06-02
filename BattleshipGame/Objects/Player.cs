@@ -88,7 +88,7 @@ namespace BattleshipGame.Objects
         /// </summary>
         public bool PlaceShip(ShipType shipType, ShipOrientation shipOrientation, int startRow, int startCol)
         {
-            Ship selectedShip = Ships[(int)shipType];
+            Ship selectedShip = GetShip(shipType);
 
             if (selectedShip.isPlaced) 
             {
@@ -97,7 +97,6 @@ namespace BattleshipGame.Objects
 
             Coordinates shipStart = new Coordinates(startRow, startCol);
             Coordinates shipEnd = CalculateShipEndPoint(selectedShip, shipOrientation,shipStart);
-
             var affectedPanels = GameBoard.Panels.Range(shipStart.Row, shipStart.Column, shipEnd.Row, shipEnd.Column);
 
             if (!IsShipWithinBounds(shipStart.Row, shipStart.Column, shipEnd.Row, shipEnd.Column) || !IsBoardRangeUnoccupied(affectedPanels))
@@ -122,30 +121,19 @@ namespace BattleshipGame.Objects
 
         public bool MoveShip(ShipType shipType, ShipDirection shipDirection)
         {
-            Ship selectedShip = Ships[(int)shipType];
-            ShipPlacements selectedShipPosition = new ShipPlacements();
-
-            (int Row, int Col) offset = (0, 0);
 
             if (ShipLocations.Count != 0)
             {
-                foreach (var shipLocation in ShipLocations)
-                {
-                    if (shipLocation.Type == shipType)
-                    {
-                        selectedShipPosition.Orientation = shipLocation.Orientation;
-                    }
-                }
-                
-                foreach (var shipLocation in ShipLocations)
-                {
-                    if (shipType == shipLocation.Type)
-                    {
-                        selectedShipPosition.UpdateCoordinates(shipLocation.ShipCoordinates);
-                    }
-                }
+                Ship selectedShip = GetShip(shipType);
+                ShipPlacements selectedShipLocation = GetShipLocation(shipType);
+                ShipPlacements updatedShipLocation = new ShipPlacements();
 
-                Coordinates[] newShipLocation = new Coordinates[selectedShipPosition.ShipCoordinates.Length];
+                (int Row, int Col) offset = (0, 0);
+                
+                updatedShipLocation.Orientation = selectedShipLocation.Orientation;
+                updatedShipLocation.UpdateCoordinates(selectedShipLocation.ShipCoordinates);
+
+                Coordinates[] newShipLocation = new Coordinates[updatedShipLocation.ShipCoordinates.Length];
 
                 // update offset based on direction
                 switch (shipDirection)
@@ -167,15 +155,16 @@ namespace BattleshipGame.Objects
                 }
 
                 // update coordinates
-                Coordinates newShipStart = new Coordinates(0, 0);
-                Coordinates newShipEnd = new Coordinates(0, 0);
                 Coordinates oldShipStart = new Coordinates(0, 0);
                 Coordinates oldShipEnd = new Coordinates(0, 0);
+                Coordinates newShipStart = new Coordinates(0, 0);
+                Coordinates newShipEnd = new Coordinates(0, 0);
+                //Coordinates newShipStart, newShipEnd, oldShipStart, oldShipEnd;
 
-                for (int i = 0; i < selectedShipPosition.ShipCoordinates.Length; i++)
+                for (int i = 0; i < updatedShipLocation.ShipCoordinates.Length; i++)
                 {
-                    int oldRow = selectedShipPosition.ShipCoordinates[i].Row;
-                    int oldCol = selectedShipPosition.ShipCoordinates[i].Column;
+                    int oldRow = updatedShipLocation.ShipCoordinates[i].Row;
+                    int oldCol = updatedShipLocation.ShipCoordinates[i].Column;
                     int newRow = oldRow + offset.Row;
                     int newCol = oldCol + offset.Col;
 
@@ -186,44 +175,40 @@ namespace BattleshipGame.Objects
                         newShipStart = new Coordinates(newRow, newCol);
                         oldShipStart = new Coordinates(oldRow, oldCol);
                     }
-                    else if (i == selectedShipPosition.ShipCoordinates.Length - 1)
+                    else if (i == updatedShipLocation.ShipCoordinates.Length - 1)
                     {
                         newShipEnd = new Coordinates(newRow, newCol);
                         oldShipEnd = new Coordinates(oldRow, oldCol);
                     }
-
                 }
 
-               
                 var newAffectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column);
                 var oldAffectedPanels = GameBoard.Panels.Range(oldShipStart.Row, oldShipStart.Column, oldShipEnd.Row, oldShipEnd.Column);
-
                 var affectedPanels = newAffectedPanels;
 
                 // modify affected panel range based on direction chosen and orientation
-                if ((selectedShipPosition.Orientation == ShipOrientation.Horizontal) && (shipDirection == ShipDirection.Left))
+                if ((updatedShipLocation.Orientation == ShipOrientation.Horizontal) && (shipDirection == ShipDirection.Left))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipStart.Row, newShipStart.Column);
                 }
-                else if ((selectedShipPosition.Orientation == ShipOrientation.Horizontal) && (shipDirection == ShipDirection.Right))
+                else if ((updatedShipLocation.Orientation == ShipOrientation.Horizontal) && (shipDirection == ShipDirection.Right))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipEnd.Row, newShipEnd.Column, newShipEnd.Row, newShipEnd.Column);
                 }
-                else if ((selectedShipPosition.Orientation == ShipOrientation.Vertical) && (shipDirection == ShipDirection.Up))
+                else if ((updatedShipLocation.Orientation == ShipOrientation.Vertical) && (shipDirection == ShipDirection.Up))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipStart.Row, newShipStart.Column);
                 }
-                else if ((selectedShipPosition.Orientation == ShipOrientation.Vertical) && (shipDirection == ShipDirection.Down))
+                else if ((updatedShipLocation.Orientation == ShipOrientation.Vertical) && (shipDirection == ShipDirection.Down))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipEnd.Row, newShipEnd.Column, newShipEnd.Row, newShipEnd.Column);
                 }
 
-            
                 // check if new range is occupied and update board if it isn't
-                if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column) && 
+                if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column) &&
                     IsBoardRangeUnoccupied(affectedPanels))
+                //if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column))
                 {
-
                     for (int i = 0; i < oldAffectedPanels.Count; i++)
                     {
                         oldAffectedPanels[i].OccupationType = OccupationType.Empty;
@@ -248,9 +233,205 @@ namespace BattleshipGame.Objects
             }
            
             return false;
-            
         }
 
+        public bool RotateShip(ShipType shipType)
+        { 
+            if (ShipLocations.Count != 0)
+            {
+                Ship selectedShip = GetShip(shipType);
+                ShipPlacements selectedShipLocation = GetShipLocation(shipType);
+                ShipPlacements updatedShipLocation = new ShipPlacements();
+
+                int panelCountBeforePivot = 0;
+                int panelCountAfterPivot = 0;
+                int pivotPanelNumber = 0;
+
+                SetPivotAndAdjacentPanelCounts(selectedShip.ShipType, ref pivotPanelNumber, ref panelCountBeforePivot, ref panelCountAfterPivot);
+
+                int pivotRow = selectedShipLocation.ShipCoordinates[pivotPanelNumber].Row;
+                int pivotColumn = selectedShipLocation.ShipCoordinates[pivotPanelNumber].Column;
+
+
+                var updatedShipCoordinates = CalculateRotatedShipCoordinates(selectedShipLocation.Orientation, pivotPanelNumber, selectedShip.Width,
+                                                                              pivotRow, pivotColumn, panelCountBeforePivot, panelCountAfterPivot);
+                updatedShipLocation.UpdateCoordinates(updatedShipCoordinates);
+                updatedShipLocation.Orientation = (selectedShipLocation.Orientation == ShipOrientation.Horizontal) ? ShipOrientation.Vertical : ShipOrientation.Horizontal; 
+
+                // get ship start and end coordinates
+                Coordinates oldShipStart = new Coordinates(0, 0);
+                Coordinates oldShipEnd = new Coordinates(0, 0);
+                Coordinates newShipStart = new Coordinates(0, 0);
+                Coordinates newShipEnd = new Coordinates(0, 0);
+
+                for (int i = 0; i < selectedShipLocation.ShipCoordinates.Length; i++)
+                {
+                    int oldRow = selectedShipLocation.ShipCoordinates[i].Row;
+                    int oldCol = selectedShipLocation.ShipCoordinates[i].Column;
+                    int newRow = updatedShipLocation.ShipCoordinates[i].Row;
+                    int newCol = updatedShipLocation.ShipCoordinates[i].Column;
+
+                    if (i == 0)
+                    {
+                        oldShipStart = new Coordinates(oldRow, oldCol);
+                        newShipStart = new Coordinates(newRow, newCol);
+                    }
+                    else if (i == selectedShipLocation.ShipCoordinates.Length - 1)
+                    {
+                        oldShipEnd = new Coordinates(oldRow, oldCol);
+                        newShipEnd = new Coordinates(newRow, newCol);
+                    }
+                }
+
+                var oldAffectedPanels = GameBoard.Panels.Range(oldShipStart.Row, oldShipStart.Column, oldShipEnd.Row, oldShipEnd.Column);
+                var newAffectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column);
+
+                // add code for test panels to complete checks
+
+                //if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column) &&
+                //   IsBoardRangeUnoccupied(newAffectedPanels))
+                if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column))
+                {
+                    // erase old panels
+                    for (int i = 0; i < oldAffectedPanels.Count; i++)
+                    {
+                        oldAffectedPanels[i].OccupationType = OccupationType.Empty;
+                    }
+
+                    // write new ones
+                    for (int i = 0; i < newAffectedPanels.Count; i++)
+                    {
+                        newAffectedPanels[i].OccupationType = selectedShip.OccupationType;
+                    }
+
+                    // update coordinates
+                    selectedShipLocation.UpdateCoordinates(updatedShipCoordinates);
+                    selectedShipLocation.Orientation = (selectedShipLocation.Orientation == ShipOrientation.Horizontal) ? ShipOrientation.Vertical : ShipOrientation.Horizontal;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private Coordinates[] CalculateRotatedShipCoordinates(ShipOrientation shipOrientation, int pivotPanel, int shipLength, int pivotRow, int pivotColumn, int panelCountBeforePivot, int panelCountAfterPivot)
+        {
+            // updated the coordinates for rotating the ship
+            Coordinates[] updatedShipCoordinates = new Coordinates[shipLength];
+
+            if (shipOrientation == ShipOrientation.Horizontal)
+            {
+                // update columns
+                for (int i = 0; i < updatedShipCoordinates.Length; i++)
+                {
+                    updatedShipCoordinates[i] = new Coordinates(0, pivotColumn);
+                }
+
+                // complete pivot panel coordinates
+                updatedShipCoordinates[pivotPanel].Row = pivotRow;
+
+                // update panel coordinates before pivot
+                for (int i = 0; i < panelCountBeforePivot; i++)
+                {
+                    updatedShipCoordinates[i].Row = pivotRow - panelCountBeforePivot + i;
+                }
+
+                // update panel coordinates after pivot
+                for (int i = 0; i < panelCountAfterPivot; i++)
+                {
+                    updatedShipCoordinates[pivotPanel + i + 1].Row = pivotRow + i + 1;
+                }
+            }
+            else if (shipOrientation == ShipOrientation.Vertical)
+            {
+                // update rows
+                for (int i = 0; i < updatedShipCoordinates.Length; i++)
+                {
+                    updatedShipCoordinates[i] = new Coordinates(pivotRow, 0);
+                }
+
+                // complete pivot panel coordinates
+                updatedShipCoordinates[pivotPanel].Column = pivotColumn;
+
+
+                // update panel coordinates before pivot
+                for (int i = 0; i < panelCountBeforePivot; i++)
+                {
+                    updatedShipCoordinates[i].Column = pivotColumn - panelCountBeforePivot + i;
+                }
+
+                // update panel coordinates after pivot
+                for (int i = 0; i < panelCountAfterPivot; i++)
+                {
+                    updatedShipCoordinates[pivotPanel + i + 1].Column = pivotColumn + i + 1;
+                }
+            }
+            return updatedShipCoordinates;
+        }
+
+        private void SetPivotAndAdjacentPanelCounts(ShipType shipType,ref int pivotPanel, ref int beforePivotPanelCount, ref int afterPivotPanelCount)
+        {   
+            // pivot panel numbers are one less the actual pivot panel number due to the zero based index 
+            switch (shipType)
+            {
+                case ShipType.Carrier:
+                    beforePivotPanelCount = 2;
+                    afterPivotPanelCount = 2;
+                    pivotPanel = 2; 
+                    break;
+                case ShipType.Battleship:
+                    beforePivotPanelCount = 1;
+                    afterPivotPanelCount = 2;
+                    pivotPanel = 1;
+                    break;
+                case ShipType.Cruiser:
+                    beforePivotPanelCount = 1;
+                    afterPivotPanelCount = 1;
+                    pivotPanel = 1;
+                    break;
+                case ShipType.Destroyer:
+                    beforePivotPanelCount = 0;
+                    afterPivotPanelCount = 1;
+                    pivotPanel = 0;
+                    break;
+                case ShipType.Submarine:
+                    beforePivotPanelCount = 1;
+                    afterPivotPanelCount = 1;
+                    pivotPanel = 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private ShipPlacements GetShipLocation(ShipType shipType)
+        {
+            // add exception handling
+            foreach (var location in ShipLocations)
+            {
+                if (location.Type == shipType)
+                {
+                    return location;
+                }
+
+            }
+            return null; // check that this is ok
+        }
+
+        private Ship GetShip(ShipType shipType)
+        {
+           // add exception handling
+            foreach (var ship in Ships)
+            {
+                if (ship.ShipType == shipType)
+                {
+                    return ship;
+                }
+            }
+
+            return null; // check that this is ok
+        }
 
         private Coordinates CalculateShipEndPoint(Ship ship, ShipOrientation shipOrientation ,Coordinates shipStart)
         {

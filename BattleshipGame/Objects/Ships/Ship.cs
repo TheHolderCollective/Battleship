@@ -6,6 +6,7 @@
     public abstract class Ship
     {
         public string Name { get; set; }
+        public ShipType ShipType { get; set;} // new
         public int Width { get; set; }
         public int Hits { get; set; }
         public OccupationType OccupationType { get; set; }
@@ -16,7 +17,6 @@
                 return Hits >= Width;
             }
         }
-
-        public bool isPlaced { get; set; }
+        public bool isPlaced { get; set; } // new
     }
 }

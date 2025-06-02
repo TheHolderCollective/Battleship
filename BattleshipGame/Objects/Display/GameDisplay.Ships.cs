@@ -40,7 +40,6 @@ namespace BattleshipGame.Objects.Display
                     shipType = ShipType.Unknown;
                     break;
             }
-
             return shipType;
         }
     }

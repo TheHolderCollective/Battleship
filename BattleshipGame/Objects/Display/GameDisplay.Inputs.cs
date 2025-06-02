@@ -16,7 +16,7 @@ namespace BattleshipGame.Objects.Display
                     ProcessCurrentMainMenuSelection();
 					break;
                 case DisplayMode.ShipPlacement:
-                    ProcessCurrentShipMenuSelection();
+                    ProcessShipPlacements(shipPlacementMode);
 					break;
                 default:
                     break;
@@ -31,28 +31,40 @@ namespace BattleshipGame.Objects.Display
             }
 		}
 
+        private void ProcessShipPlacements(ShipPlacementMode spMode)
+        {
+            switch (spMode)
+            {
+                case ShipPlacementMode.SelectShip:
+                    ProcessCurrentShipMenuSelection();
+                    break;
+                case ShipPlacementMode.PositionShip:
+                    shipPlacementMode = ShipPlacementMode.SelectShip;
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void ProcessCurrentShipMenuSelection()
         {
-            shipPlacementMode = ShipPlacementMode.PositionShip;
-
-            // the code below needs to be changed to initially position the selected ship on the board
-            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-
-            // temporary just for testing
             Random rand = new Random(Guid.NewGuid().GetHashCode());
-            shipX = rand.Next(1, 11);
-            shipY = rand.Next(1, 11);
-            shipOrientation =(ShipOrientation) rand.Next(0, 2);
-            //
+            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+            bool shipNotPlaced = true;
 
-            if (gamePlayer1.PlaceShip(selectedShip, shipOrientation, shipX, shipY))
+            while (shipNotPlaced)
             {
-                //ActivateShipPlacementMode();
-                UpdatePlayerBoardForShipPlacement();
-                shipPlacementMode = ShipPlacementMode.PositionShip;
+                shipX = rand.Next(1, 11);
+                shipY = rand.Next(1, 11);
+                shipOrientation = (ShipOrientation)rand.Next(0, 2);
+
+                shipNotPlaced = !gamePlayer1.PlaceShip(selectedShip, shipOrientation, shipX, shipY);
             }
 
-		}
+            UpdatePlayerBoardForShipPlacement();
+            shipPlacementMode = ShipPlacementMode.PositionShip;
+
+        }
 
 		#endregion
 
@@ -155,7 +167,6 @@ namespace BattleshipGame.Objects.Display
                     break;
             }
         }
-
         private void ProcessInputLeftArrowKey(DisplayMode displayMode)
         {
             switch (displayMode)
@@ -180,7 +191,6 @@ namespace BattleshipGame.Objects.Display
                     break;
             }
         }
-
         private void ProcessInputRightArrowKey(DisplayMode displayMode)
         {
             switch (displayMode)
@@ -207,7 +217,29 @@ namespace BattleshipGame.Objects.Display
         }
         #endregion
 
-        private void ProcessBackspaceKey(DisplayMode displayMode)
+        private void ProcessInputSpacebar(DisplayMode displayMode)
+        {
+            switch (displayMode)
+            {
+                case DisplayMode.ShipPlacement:
+                    switch (shipPlacementMode)
+                    {
+                        case ShipPlacementMode.SelectShip:
+                            break;
+                        case ShipPlacementMode.PositionShip:
+                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+                            gamePlayer1.RotateShip(selectedShip);
+                            UpdatePlayerBoardForShipPlacement();
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void ProcessInputBackspaceKey(DisplayMode displayMode)
         {
             switch (displayMode)
             {
@@ -226,7 +258,6 @@ namespace BattleshipGame.Objects.Display
                 default:
                     break;
             }
-
         }
     }
 }

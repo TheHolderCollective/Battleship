@@ -14,6 +14,7 @@ namespace BattleshipGame.Objects.Ships
             Width = 2;
             OccupationType = OccupationType.Destroyer;
             isPlaced = false;
+            ShipType = ShipType.Destroyer;
         }
     }
 }

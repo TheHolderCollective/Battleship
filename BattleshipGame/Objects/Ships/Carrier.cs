@@ -14,6 +14,7 @@ namespace BattleshipGame.Objects.Ships
             Width = 5;
             OccupationType = OccupationType.Carrier;
             isPlaced = false;
+            ShipType = ShipType.Carrier;
         }
     }
 }

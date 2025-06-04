@@ -13,7 +13,7 @@ namespace BattleshipGame.Objects.Ships
             Name = "Submarine";
             Width = 3;
             OccupationType = OccupationType.Submarine;
-            isPlaced = false;
+            IsPlaced = false;
             ShipType = ShipType.Submarine;
         }
     }

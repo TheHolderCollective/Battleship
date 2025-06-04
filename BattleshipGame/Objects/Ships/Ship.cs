@@ -17,6 +17,6 @@
                 return Hits >= Width;
             }
         }
-        public bool isPlaced { get; set; } // new
+        public bool IsPlaced { get; set; } // new
     }
 }

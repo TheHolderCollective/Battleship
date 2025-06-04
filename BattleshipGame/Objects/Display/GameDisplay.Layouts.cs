@@ -196,7 +196,6 @@ namespace BattleshipGame.Objects.Display
 
         // TODO update texts used for ships
         #region Start Screen Sub Layouts
-       
         private static Layout CreateMainMenuLayout()
         {
             var menuLayout = new Layout("MainMenu").MinimumSize(80);
@@ -227,7 +226,6 @@ namespace BattleshipGame.Objects.Display
             footerLayout.Update(footerPanel);
             return footerLayout;
         }
-        
         #endregion
 
         #region Ship Selection/Placement
@@ -252,7 +250,7 @@ namespace BattleshipGame.Objects.Display
         private static Layout CreateShipPlacementUpdatesLayout()
         {
             var updatesLayout = new Layout("ShipPlacementInfo");
-            var updatesText = "> Ships placed: "; // update this text
+            var updatesText = ""; // update this text
             var updatesMarkup = new Markup(updatesText.ToString()).LeftJustified();
             var resultsPanel = new Panel(updatesMarkup).Expand().Header("Ship Placement Updates").HeaderAlignment(Justify.Center);
 

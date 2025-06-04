@@ -7,7 +7,7 @@
             Name = "Battleship";
             Width = 4;
             OccupationType = OccupationType.Battleship;
-            isPlaced = false;
+            IsPlaced = false;
             ShipType = ShipType.Battleship;
         }
     }

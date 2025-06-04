@@ -70,11 +70,22 @@ namespace BattleshipGame
 
     public enum ShipType
     {
+        [Description("Carrier")]
         Carrier,
+
+        [Description("Battleship")]
         Battleship,
+
+        [Description("Cruiser")]
         Cruiser,
+
+        [Description("Destroyer")]
         Destroyer,
+
+        [Description("Submarine")]
         Submarine,
+
+        [Description("Unknown")]
         Unknown
     }
 

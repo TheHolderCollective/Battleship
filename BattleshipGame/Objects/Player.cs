@@ -17,6 +17,7 @@ namespace BattleshipGame.Objects
 
         // new additions
         public List<ShipPlacements> ShipLocations { get; set; }
+        public List<string> ShipPlacementLogs { get; }
         public string FiredShot { get; set; }
         public string ReceivedShot { get; set; }
         public string ShipStatus { get; set; }
@@ -45,6 +46,7 @@ namespace BattleshipGame.Objects
             GameBoard = new GameBoard();
             FiringBoard = new FiringBoard();
             ShipLocations = new List<ShipPlacements>();
+            ShipPlacementLogs = new List<string>();
 
             RoundNumber = 0; // new
         }
@@ -90,7 +92,7 @@ namespace BattleshipGame.Objects
         {
             Ship selectedShip = GetShip(shipType);
 
-            if (selectedShip.isPlaced) 
+            if (selectedShip.IsPlaced) 
             {
                 return true;
             }
@@ -115,7 +117,8 @@ namespace BattleshipGame.Objects
             ShipPlacements shipLocation = new ShipPlacements(shipType, shipOrientation, shipCoords);
             ShipLocations.Add(shipLocation);
 
-            selectedShip.isPlaced = true; // check this if there are problems
+            selectedShip.IsPlaced = true; // check this if there are problems
+            UpdateShipPlacementLog();
             return true; 
         }
 
@@ -221,11 +224,12 @@ namespace BattleshipGame.Objects
 
                     foreach (var shipLocation in ShipLocations)
                     {
-                        if (shipLocation.Type == shipType)
+                        if (shipLocation.TypeOfShip == shipType)
                         {
                             shipLocation.UpdateCoordinates(newShipLocation);
                         }
                     }
+                    UpdateShipPlacementLog();
                     return true;
                     
                 }
@@ -286,11 +290,20 @@ namespace BattleshipGame.Objects
                 var oldAffectedPanels = GameBoard.Panels.Range(oldShipStart.Row, oldShipStart.Column, oldShipEnd.Row, oldShipEnd.Column);
                 var newAffectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column);
 
-                // add code for test panels to complete checks
 
-                //if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column) &&
-                //   IsBoardRangeUnoccupied(newAffectedPanels))
-                if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column))
+                // exclude pivot panel from test -- find a nicer way of doing this
+                var affectedPanels = new List<GameBoardPanel>();
+                foreach (var panel in newAffectedPanels)
+                {
+                    if (panel.Coordinates.Row == pivotRow && panel.Coordinates.Column == pivotColumn)
+                    {
+                        continue;
+                    }
+                    affectedPanels.Add(panel);
+                }
+                
+                if (IsShipWithinBounds(newShipStart.Row, newShipStart.Column, newShipEnd.Row, newShipEnd.Column) &&
+                  IsBoardRangeUnoccupied(affectedPanels))
                 {
                     // erase old panels
                     for (int i = 0; i < oldAffectedPanels.Count; i++)
@@ -307,12 +320,21 @@ namespace BattleshipGame.Objects
                     // update coordinates
                     selectedShipLocation.UpdateCoordinates(updatedShipCoordinates);
                     selectedShipLocation.Orientation = (selectedShipLocation.Orientation == ShipOrientation.Horizontal) ? ShipOrientation.Vertical : ShipOrientation.Horizontal;
-
+                    UpdateShipPlacementLog();
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private void UpdateShipPlacementLog()
+        {
+            ShipPlacementLogs.Clear();
+            foreach (var location in ShipLocations)
+            {
+                ShipPlacementLogs.Add(location.PlacementLog);
+            }
         }
 
         private Coordinates[] CalculateRotatedShipCoordinates(ShipOrientation shipOrientation, int pivotPanel, int shipLength, int pivotRow, int pivotColumn, int panelCountBeforePivot, int panelCountAfterPivot)
@@ -410,7 +432,7 @@ namespace BattleshipGame.Objects
             // add exception handling
             foreach (var location in ShipLocations)
             {
-                if (location.Type == shipType)
+                if (location.TypeOfShip == shipType)
                 {
                     return location;
                 }

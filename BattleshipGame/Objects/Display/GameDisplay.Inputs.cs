@@ -61,7 +61,8 @@ namespace BattleshipGame.Objects.Display
                 shipNotPlaced = !gamePlayer1.PlaceShip(selectedShip, shipOrientation, shipX, shipY);
             }
 
-            UpdatePlayerBoardForShipPlacement();
+            UpdateShipPlacementGameboard();
+            UpdateShipPlacementInfo();
             shipPlacementMode = ShipPlacementMode.PositionShip;
 
         }
@@ -129,7 +130,8 @@ namespace BattleshipGame.Objects.Display
                         case ShipPlacementMode.PositionShip:
                             ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
                             gamePlayer1.MoveShip(selectedShip, ShipDirection.Up);
-                            UpdatePlayerBoardForShipPlacement();
+                            UpdateShipPlacementGameboard();
+                            UpdateShipPlacementInfo();
                             break;
                         default:
                             break;
@@ -157,7 +159,8 @@ namespace BattleshipGame.Objects.Display
                         case ShipPlacementMode.PositionShip:
                             ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
                             gamePlayer1.MoveShip(selectedShip, ShipDirection.Down);
-                            UpdatePlayerBoardForShipPlacement();
+                            UpdateShipPlacementGameboard();
+                            UpdateShipPlacementInfo();
                             break;
                         default:
                             break;
@@ -181,7 +184,8 @@ namespace BattleshipGame.Objects.Display
                         case ShipPlacementMode.PositionShip:
                             ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
                             gamePlayer1.MoveShip(selectedShip, ShipDirection.Left);
-                            UpdatePlayerBoardForShipPlacement();
+                            UpdateShipPlacementGameboard();
+                            UpdateShipPlacementInfo();
                             break;
                         default:
                             break;
@@ -205,7 +209,8 @@ namespace BattleshipGame.Objects.Display
                         case ShipPlacementMode.PositionShip:
                             ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
                             gamePlayer1.MoveShip(selectedShip, ShipDirection.Right);
-                            UpdatePlayerBoardForShipPlacement();
+                            UpdateShipPlacementGameboard();
+                            UpdateShipPlacementInfo();
                             break;
                         default:
                             break;
@@ -229,7 +234,8 @@ namespace BattleshipGame.Objects.Display
                         case ShipPlacementMode.PositionShip:
                             ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
                             gamePlayer1.RotateShip(selectedShip);
-                            UpdatePlayerBoardForShipPlacement();
+                            UpdateShipPlacementGameboard();
+                            UpdateShipPlacementInfo();
                             break;
                         default:
                             break;

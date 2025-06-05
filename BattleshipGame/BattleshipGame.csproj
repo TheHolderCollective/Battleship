@@ -88,6 +88,7 @@
     <Compile Include="Objects\Display\GameDisplay.Helpers.cs" />
     <Compile Include="Objects\Display\GameDisplay.Menus.cs" />
     <Compile Include="Objects\Display\GameDisplay.Modes.cs" />
+    <Compile Include="Objects\Display\GameDisplay.Play.cs" />
     <Compile Include="Objects\Display\GameDisplay.Updates.cs" />
     <Compile Include="Objects\Games\Game.cs" />
     <Compile Include="Objects\Menu\Menu.cs" />

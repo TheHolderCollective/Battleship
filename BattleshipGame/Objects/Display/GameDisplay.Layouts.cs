@@ -60,7 +60,7 @@ namespace BattleshipGame.Objects.Display
         private static Layout CreateGameBoardLayout()
         {
             var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1,"PlayerGameBoard");
-            var firingBoardLayout = CreateFiringBoardLayout(gamePlayer1, gamePlayer2.Name);
+            var firingBoardLayout = CreateFiringBoardLayout(gamePlayer1, "OpponentFiringBoard");
             var statusBoardLayout = CreateStatusBoardsLayout();
             var gameInfoLayout = CreateGameInfoLayout();
 
@@ -103,19 +103,21 @@ namespace BattleshipGame.Objects.Display
 
             var playerBoard1 = String.Format(Environment.NewLine + MakeGameBoard(player));
             var playerBoardText = new Markup(playerBoard1).Centered();
-            var playerBoardPanel = new Panel(playerBoardText).Expand().Header(player.Name + "'s Board").HeaderAlignment(Justify.Center);
+            var playerBoardPanel = new Panel(playerBoardText).Expand().Header("Player Board").HeaderAlignment(Justify.Center);
+            //var playerBoardPanel = new Panel(playerBoardText).Expand().Header(player.Name + "'s Board").HeaderAlignment(Justify.Center);
 
             playerBoardLayout.Update(playerBoardPanel);
 
             return playerBoardLayout;
         }
-        private static Layout CreateFiringBoardLayout(Player player, string opponentsName)
+        private static Layout CreateFiringBoardLayout(Player player, string layoutName)
         {
-            var firingBoardLayout = new Layout("FiringBoard").MinimumSize(60);
+            var firingBoardLayout = new Layout(layoutName).MinimumSize(60);
 
             var playerBoard2 = String.Format(Environment.NewLine + MakeFiringBoard(player));
             var firingBoardText = new Markup(playerBoard2).Centered();
-            var firingBoardPanel = new Panel(firingBoardText).Expand().Header(opponentsName + "'s Board").HeaderAlignment(Justify.Center);
+            var firingBoardPanel = new Panel(firingBoardText).Expand().Header("Firing Board").HeaderAlignment(Justify.Center);
+            //var firingBoardPanel = new Panel(firingBoardText).Expand().Header(opponentsName + "'s Board").HeaderAlignment(Justify.Center);
 
             firingBoardLayout.Update(firingBoardPanel);
 
@@ -158,7 +160,7 @@ namespace BattleshipGame.Objects.Display
         {
             // TODO Determine how target info will be fed into panel
             var targetInfoLayout = new Layout("TargetInfo");
-            var targetText = "X: " + "Y: " + "\nTargeting: ( , )";
+            var targetText = $"Targeting: ({gamePlayer1.CrosshairsX} , {gamePlayer1.CrosshairsY})";
             var targetMarkup = new Markup(targetText.ToString()).LeftJustified();
             var targetPanel = new Panel(targetMarkup).Expand().Header("Targeting Dashboard").HeaderAlignment(Justify.Center);
 

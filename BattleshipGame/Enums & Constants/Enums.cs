@@ -26,7 +26,10 @@ namespace BattleshipGame
         Hit,
 
         [Description("M")]
-        Miss
+        Miss,
+
+        [Description("+")]
+        Crosshair
     }
 
     public enum ShotResult
@@ -101,13 +104,14 @@ namespace BattleshipGame
         PositionShip
     }
 
-    public enum ShipDirection
+    public enum Direction
     {
         Up,
         Down,
         Left,
         Right
     }
+
     public enum BoardDimensions
     {
         Width = 10,

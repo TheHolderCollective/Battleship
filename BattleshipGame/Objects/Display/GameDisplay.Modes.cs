@@ -22,14 +22,6 @@ namespace BattleshipGame.Objects.Display
         private void ActivateGamePlayMode()
         {
             DeactivateAllLayouts();
-
-            //new
-            var playerBoard1 = String.Format(Environment.NewLine + MakeGameBoard(gamePlayer1));
-            var playerBoardText = new Markup(playerBoard1).Centered();
-            var playerBoardPanel = new Panel(playerBoardText).Expand().Header(gamePlayer1.Name + "'s Board").HeaderAlignment(Justify.Center);
-            gameLayout["PlayerGameBoard"].Update(playerBoardPanel);
-            //
-
             gameLayout["GameBoard"].Visible();
             displayMode = DisplayMode.GamePlay;
         }

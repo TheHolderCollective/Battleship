@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
+using BattleshipGame;
+using BattleshipGame.Extensions;
 
 namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-       
         private static string GetRoundResultsSummary(Player player1, Player player2)
         {
             StringBuilder resultsText = new StringBuilder();
@@ -52,6 +54,7 @@ namespace BattleshipGame.Objects.Display
             StringBuilder flattenedGameBoard = new StringBuilder();
             int gameBoardSize = (int)BoardDimensions.Width;
             var gameBoard = player.OutputGameBoard();
+            string padding = "  ";
 
             for (int i = 0; i < gameBoardSize; i++)
             {
@@ -59,7 +62,7 @@ namespace BattleshipGame.Objects.Display
 
                 for (int j = 0; j < gameBoardSize; j++)
                 {
-                    var gameBoardPanel = AddMarkupToGameboardPanel(gameBoard[i, j]);
+                    var gameBoardPanel = AddMarkupToGameboardPanel(gameBoard[i, j], padding);
                     boardLine = string.Concat(boardLine, gameBoardPanel);
                 }
 
@@ -68,20 +71,20 @@ namespace BattleshipGame.Objects.Display
 
             return flattenedGameBoard.ToString();
         }
-
         private static string MakeFiringBoard(Player player)
         {
             StringBuilder flattenedFiringBoard = new StringBuilder();
             int gameBoardSize = (int)BoardDimensions.Width;
             var firingBoard = player.OutputFiringBoard();
-
+            string padding = "  ";
+            
             for (int i = 0; i < gameBoardSize; i++)
             {
                 string boardLine = string.Empty;
 
                 for (int j = 0; j < gameBoardSize; j++)
                 {
-                    var gameBoardPanel = AddMarkupToGameboardPanel(firingBoard[i, j]);
+                    var gameBoardPanel = AddMarkupToGameboardPanel(firingBoard[i, j], padding);
                     boardLine = string.Concat(boardLine, gameBoardPanel);
                 }
 
@@ -90,14 +93,14 @@ namespace BattleshipGame.Objects.Display
 
             return flattenedFiringBoard.ToString();
         }
-
-        private static string AddMarkupToGameboardPanel(string gameBoardPanel)
+        private static string AddMarkupToGameboardPanel(string gameBoardPanel, string padding)
         {
             string panelWithMarkup = String.Empty;
             string shipMarkupTag = "[green]";
             string missMarkupTag = "[yellow][invert]";
             string hitMarkupTag = "[red][invert]";
             string defaultMarkupTag = "[blue]";
+            string crosshairsMarkupTag = "[yellow]";
             string tagClose = "[/]";
 
             switch (gameBoardPanel.Trim())
@@ -107,16 +110,19 @@ namespace BattleshipGame.Objects.Display
                 case "D":
                 case "S":
                 case "A":
-                    panelWithMarkup = string.Format(shipMarkupTag + gameBoardPanel.Trim() + tagClose + "  ");
+                    panelWithMarkup = string.Format(shipMarkupTag + gameBoardPanel.Trim() + tagClose + padding);
                     break;
                 case "M":
-                    panelWithMarkup = string.Format(missMarkupTag + "*" + tagClose + tagClose + "  ");
+                    panelWithMarkup = string.Format(missMarkupTag + "*" + tagClose + tagClose + padding);
                     break;
                 case "X":
-                    panelWithMarkup = string.Format(hitMarkupTag + gameBoardPanel.Trim() + tagClose + tagClose + "  ");
+                    panelWithMarkup = string.Format(hitMarkupTag + gameBoardPanel.Trim() + tagClose + tagClose + padding);
                     break;
                 case "o":
-                    panelWithMarkup = string.Format(defaultMarkupTag + gameBoardPanel.Trim() + tagClose + "  ");
+                    panelWithMarkup = string.Format(defaultMarkupTag + gameBoardPanel.Trim() + tagClose + padding);
+                    break;
+                case "+":
+                    panelWithMarkup = string.Format(crosshairsMarkupTag + gameBoardPanel.Trim() + tagClose + padding); // check if display is messed up
                     break;
                 default:
                     panelWithMarkup = gameBoardPanel;

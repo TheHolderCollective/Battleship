@@ -65,19 +65,27 @@
             }
         }
 
-        public static int DefaultShipX
-        {
-            get
-            {
-                return 5;
-            }
-        }
+        //public static int DefaultShipX
+        //{
+        //    get
+        //    {
+        //        return 5;
+        //    }
+        //}
 
-        public static int DefaultShipY
+        //public static int DefaultShipY
+        //{
+        //    get
+        //    {
+        //        return 5;
+        //    }
+        //}
+
+        public static int ShipTotal
         {
-            get
-            {
-                return 5;
+            get 
+            { 
+                return 5; 
             }
         }
 

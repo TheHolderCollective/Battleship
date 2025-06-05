@@ -24,9 +24,10 @@ namespace BattleshipGame.Objects.Display
         {
             gamePlayer1 = player1;
             gamePlayer2 = player2;
+            gamePlayer2.PlaceShipsRandomly();
 
-            shipX = GameConstants.DefaultShipX;
-            shipY = GameConstants.DefaultShipY;
+            //shipX = GameConstants.DefaultShipX;
+            //shipY = GameConstants.DefaultShipY;
 
             mainMenu = new Menu(MenuItemLists.MainMenuItems);
             shipMenu = new Menu(MenuItemLists.ShipMenuItems);
@@ -88,16 +89,17 @@ namespace BattleshipGame.Objects.Display
             switch (keyPressed)
             {
                 case ConsoleKey.F1:
-                    ActivateDemoMode();
+                    ActivateMainMenuMode();
+                    //ActivateDemoMode();
                     break;
                 case ConsoleKey.F2:
-                    ActivateGamePlayMode();
+                    ProcessInputF2Key(displayMode);
                     break;
                 case ConsoleKey.F3:
                     ActivateShipPlacementMode();
                     break;
-                case ConsoleKey.F4:                   
-                    ActivateMainMenuMode();
+                case ConsoleKey.F4:
+                    ProcessInputF4Key(displayMode);
                     break;
                 case ConsoleKey.UpArrow:
                     ProcessInputUpArrowKey(displayMode);

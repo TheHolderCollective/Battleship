@@ -11,11 +11,11 @@ namespace BattleshipGame.Objects.Games
 
         public Game()
         {
-            Player1 = new Player("Amy");
-            Player2 = new Player("Vince");
+            Player1 = new Player("Challenger");
+            Player2 = new Player("Computer");
 
-            Player1.PlaceShips();
-            Player2.PlaceShips();
+            Player1.PlaceShipsRandomly();
+            Player2.PlaceShipsRandomly();
 
             Player1.OutputBoards();
             Player2.OutputBoards();
@@ -27,13 +27,13 @@ namespace BattleshipGame.Objects.Games
         {
             //Each exchange of shots is called a Round.
             //One round = Player 1 fires a shot, then Player 2 fires a shot.
-            var coordinates = Player1.FireShot();
+            var coordinates = Player1.FireAutoShot();
             var result = Player2.ProcessShot(coordinates);
             Player1.ProcessShotResult(coordinates, result);
 
             if (!Player2.HasLost) //If player 2 already lost, we can't let them take another turn.
             {
-                coordinates = Player2.FireShot();
+                coordinates = Player2.FireAutoShot();
                 result = Player1.ProcessShot(coordinates);
                 Player2.ProcessShotResult(coordinates, result);
             }

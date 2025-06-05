@@ -48,17 +48,15 @@ namespace BattleshipGame
             //roundNumber1 = Player1.RoundNumber;
             //roundNumber2 = Player2.RoundNumber;
 
-            Player Player1 = new Player("Player X");
-            Player Player2 = new Player("Vince");
-
-            GameDisplay gameDisplay = new GameDisplay(Player1, Player2);
 
             try
             {
-                //var gameBoard = Player1.OutputGameBoard();
-                //Console.WriteLine(gameBoard.ToString());
-                //Console.ReadKey();
+                Player Player1 = new Player("Challenger");
+                Player Player2 = new Player("Computer");
+
+                GameDisplay gameDisplay = new GameDisplay(Player1, Player2);
                 gameDisplay.ShowDisplay();
+
             }
             catch (Exception ex)
             {

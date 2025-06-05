@@ -22,6 +22,29 @@ namespace BattleshipGame.Objects
         public string ReceivedShot { get; set; }
         public string ShipStatus { get; set; }
         public int RoundNumber { get; set; }
+        private bool ShipsAlreadyPlaced 
+        {
+            get 
+            {
+                return ShipLocations.Count > 0;
+            }
+        }
+        public int CrosshairsX 
+        {
+            get
+            {
+                return PriorCrosshairsPosition.Row;
+            }
+        }
+        public int CrosshairsY
+        {
+            get
+            {
+                return PriorCrosshairsPosition.Column;
+            }
+        }
+        private Coordinates PriorCrosshairsPosition { get; set;}
+        private OccupationType PriorOccupationType { get; set; }
         //
         public bool HasLost
         {
@@ -30,12 +53,11 @@ namespace BattleshipGame.Objects
                 return Ships.All(x => x.IsSunk);
             }
         }
-
         public Player(string name)
         {
             Name = name;
             Ships = new List<Ship>()
-            { // RH: order significant do not change
+            { 
                 new Carrier(),
                 new Battleship(),
                 new Cruiser(),
@@ -45,12 +67,18 @@ namespace BattleshipGame.Objects
 
             GameBoard = new GameBoard();
             FiringBoard = new FiringBoard();
+
+            //new:
             ShipLocations = new List<ShipPlacements>();
             ShipPlacementLogs = new List<string>();
 
-            RoundNumber = 0; // new
-        }
+            // initial position of target crosshairs
+            PriorCrosshairsPosition = new Coordinates(5, 5); 
+            PriorOccupationType = FiringBoard.Panels.At(5, 5).OccupationType;
+            PlaceInitialCrossHairs();
 
+            RoundNumber = 0; 
+        }
         public string[,] OutputGameBoard()
         {
             int boardWidth = (int) BoardDimensions.Width;
@@ -85,9 +113,139 @@ namespace BattleshipGame.Objects
 
         }
 
-        /// <summary>
-        /// Places ship at position given by startRow and startCol. Returns true if placement is successful
-        /// </summary>
+        private void PlaceInitialCrossHairs()
+        {
+            PlaceCrosshairs(PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column);
+        }
+        private void PlaceCrosshairs(int row, int column)
+        {
+            // check boundaries
+            if (row < 1 || column < 1 || row > 10 || column > 10)
+            {
+                return; // maybe throw exception
+            }
+
+            // restore panel
+            //FiringBoard.Panels.At(PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column).OccupationType = PriorOccupationType; 
+            var oldPanel = FiringBoard.Panels.Range(PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column, 
+                                                    PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column);
+            oldPanel[0].OccupationType = PriorOccupationType;
+
+            // save new occupation type for later
+            //PriorOccupationType = FiringBoard.Panels.At(row, column).OccupationType;
+            var newPanel = FiringBoard.Panels.Range(row, column, row, column);
+            PriorOccupationType = newPanel[0].OccupationType;
+
+            // update new panel
+            //FiringBoard.Panels.At(row, column).OccupationType = OccupationType.Crosshair;
+            newPanel[0].OccupationType = OccupationType.Crosshair;
+
+            PriorCrosshairsPosition = new Coordinates(row, column);
+        }
+        
+        public void MoveCrosshairs(Direction direction)
+        {
+            int row = PriorCrosshairsPosition.Row;
+            int col = PriorCrosshairsPosition.Column;
+
+            switch (direction)
+            {
+                case Direction.Up:
+                    row--;
+                    break;
+                case Direction.Down:
+                    row++;
+                    break;
+                case Direction.Left:
+                    col--;
+                    break;
+                case Direction.Right:
+                    col++;
+                    break;
+                default:
+                    break;
+            }
+
+            PlaceCrosshairs(row, col);
+        }
+        
+        public void PlaceShipsRandomly()
+        {
+            if (ShipsAlreadyPlaced)
+            {
+                return;
+            }
+
+            //Random class creation stolen from http://stackoverflow.com/a/18267477/106356
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            foreach (var ship in Ships)
+            {
+                //Select a random row/column combination, then select a random orientation.
+                //If none of the proposed panels are occupied, place the ship
+                //Do this for all ships
+
+                Ship selectedShip = ship;
+              
+                bool isOpen = true;
+                while (isOpen)
+                {
+                    var startcolumn = rand.Next(1, 11);
+                    var startrow = rand.Next(1, 11);
+                    int endrow = startrow, endcolumn = startcolumn;
+                    ShipOrientation orientation = (rand.Next(1, 101) % 2) == 0 ? ShipOrientation.Horizontal: ShipOrientation.Vertical;
+
+                    List<int> panelNumbers = new List<int>();
+                    if (orientation == ShipOrientation.Horizontal)
+                    {
+                        for (int i = 1; i < ship.Width; i++)
+                        {
+                            endcolumn++;
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 1; i < ship.Width; i++)
+                        {
+                            endrow++;
+                        }
+                    }
+
+                    // We cannot place ships beyond the boundaries of the board
+                    if (endrow > 10 || endcolumn > 10)
+                    {
+                        isOpen = true;
+                        continue;
+                    }
+
+                    // Check if specified panels are occupied
+                    var affectedPanels = GameBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
+                    if (affectedPanels.Any(x => x.IsOccupied))
+                    {
+                        isOpen = true;
+                        continue;
+                    }
+
+                    foreach (var panel in affectedPanels)
+                    {
+                        panel.OccupationType = ship.OccupationType;
+                    }
+                    isOpen = false;
+
+                    // new -- update ShipLocation
+                    Coordinates[] shipCoords = new Coordinates[affectedPanels.Count];
+                    for (int i = 0; i < affectedPanels.Count; i++)
+                    {
+                        shipCoords[i] = new Coordinates(affectedPanels[i].Coordinates.Row, affectedPanels[i].Coordinates.Column);
+                    }
+
+                    ShipPlacements shipLocation = new ShipPlacements(selectedShip.ShipType, orientation, shipCoords);
+                    ShipLocations.Add(shipLocation);
+                    selectedShip.IsPlaced = true; // check this if there are problems
+                    UpdateShipPlacementLog();
+                }
+            }
+        }
+
         public bool PlaceShip(ShipType shipType, ShipOrientation shipOrientation, int startRow, int startCol)
         {
             Ship selectedShip = GetShip(shipType);
@@ -122,7 +280,7 @@ namespace BattleshipGame.Objects
             return true; 
         }
 
-        public bool MoveShip(ShipType shipType, ShipDirection shipDirection)
+        public bool MoveShip(ShipType shipType, Direction shipDirection)
         {
 
             if (ShipLocations.Count != 0)
@@ -141,16 +299,16 @@ namespace BattleshipGame.Objects
                 // update offset based on direction
                 switch (shipDirection)
                 {
-                    case ShipDirection.Up:
+                    case Direction.Up:
                         offset.Row = -1;
                         break;
-                    case ShipDirection.Down:
+                    case Direction.Down:
                         offset.Row = 1;
                         break;
-                    case ShipDirection.Left:
+                    case Direction.Left:
                         offset.Col = -1;
                         break;
-                    case ShipDirection.Right:
+                    case Direction.Right:
                         offset.Col = 1;
                         break;
                     default:
@@ -190,19 +348,19 @@ namespace BattleshipGame.Objects
                 var affectedPanels = newAffectedPanels;
 
                 // modify affected panel range based on direction chosen and orientation
-                if ((updatedShipLocation.Orientation == ShipOrientation.Horizontal) && (shipDirection == ShipDirection.Left))
+                if ((updatedShipLocation.Orientation == ShipOrientation.Horizontal) && (shipDirection == Direction.Left))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipStart.Row, newShipStart.Column);
                 }
-                else if ((updatedShipLocation.Orientation == ShipOrientation.Horizontal) && (shipDirection == ShipDirection.Right))
+                else if ((updatedShipLocation.Orientation == ShipOrientation.Horizontal) && (shipDirection == Direction.Right))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipEnd.Row, newShipEnd.Column, newShipEnd.Row, newShipEnd.Column);
                 }
-                else if ((updatedShipLocation.Orientation == ShipOrientation.Vertical) && (shipDirection == ShipDirection.Up))
+                else if ((updatedShipLocation.Orientation == ShipOrientation.Vertical) && (shipDirection == Direction.Up))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipStart.Row, newShipStart.Column, newShipStart.Row, newShipStart.Column);
                 }
-                else if ((updatedShipLocation.Orientation == ShipOrientation.Vertical) && (shipDirection == ShipDirection.Down))
+                else if ((updatedShipLocation.Orientation == ShipOrientation.Vertical) && (shipDirection == Direction.Down))
                 {
                     affectedPanels = GameBoard.Panels.Range(newShipEnd.Row, newShipEnd.Column, newShipEnd.Row, newShipEnd.Column);
                 }
@@ -502,65 +660,15 @@ namespace BattleshipGame.Objects
 
         }
 
-        public void PlaceShips()
+        public Coordinates FireManualShot()
         {
-            //Random class creation stolen from http://stackoverflow.com/a/18267477/106356
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            foreach (var ship in Ships)
-            {
-                //Select a random row/column combination, then select a random orientation.
-                //If none of the proposed panels are occupied, place the ship
-                //Do this for all ships
+            RoundNumber++;
+            Coordinates coords = new Coordinates(PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column);
+            FiredShot = String.Format(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
 
-                bool isOpen = true;
-                while (isOpen)
-                {
-                    var startcolumn = rand.Next(1, 11);
-                    var startrow = rand.Next(1, 11);
-                    int endrow = startrow, endcolumn = startcolumn;
-                    var orientation = rand.Next(1, 101) % 2; //0 for Horizontal
-
-                    List<int> panelNumbers = new List<int>();
-                    if (orientation == (int) ShipOrientation.Horizontal)
-                    {
-                        for (int i = 1; i < ship.Width; i++)
-                        {
-                            endcolumn++;
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 1; i < ship.Width; i++)
-                        {
-                            endrow++;
-                        }
-                    }
-
-                    //We cannot place ships beyond the boundaries of the board
-                    if (endrow > 10 || endcolumn > 10)
-                    {
-                        isOpen = true;
-                        continue;
-                    }
-
-                    //Check if specified panels are occupied
-                    var affectedPanels = GameBoard.Panels.Range(startrow, startcolumn, endrow, endcolumn);
-                    if (affectedPanels.Any(x => x.IsOccupied))
-                    {
-                        isOpen = true;
-                        continue;
-                    }
-
-                    foreach (var panel in affectedPanels)
-                    {
-                        panel.OccupationType = ship.OccupationType;
-                    }
-                    isOpen = false;
-                }
-            }
+            return coords;
         }
-
-        public Coordinates FireShot()
+        public Coordinates FireAutoShot()
         {
             // new
             RoundNumber++;
@@ -583,7 +691,6 @@ namespace BattleshipGame.Objects
 
             return coords;
         }
-
         private Coordinates RandomShot()
         {
             var availablePanels = FiringBoard.GetOpenRandomPanels();
@@ -591,7 +698,6 @@ namespace BattleshipGame.Objects
             var panelID = rand.Next(availablePanels.Count);
             return availablePanels[panelID];
         }
-
         private Coordinates SearchingShot()
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
@@ -599,7 +705,6 @@ namespace BattleshipGame.Objects
             var neighborID = rand.Next(hitNeighbors.Count);
             return hitNeighbors[neighborID];
         }
-
         public ShotResult ProcessShot(Coordinates coords)
         {
             var panel = GameBoard.Panels.At(coords.Row, coords.Column);
@@ -609,13 +714,13 @@ namespace BattleshipGame.Objects
             {
                 ReceivedShot = String.Format(Name + " says: \"Miss!\""); //new
                 GameBoard.Panels.At(coords.Row, coords.Column).OccupationType = OccupationType.Miss; // new -- update playerboard
-
                 return ShotResult.Miss;
             }
             var ship = Ships.First(x => x.OccupationType == panel.OccupationType);
             ship.Hits++;
 
             ReceivedShot = String.Format(Name + " says: \"Hit!\"");
+            
             //new -- update playerboard
             GameBoard.Panels.At(coords.Row, coords.Column).OccupationType = OccupationType.Hit;
 
@@ -634,10 +739,12 @@ namespace BattleshipGame.Objects
             {
                 case ShotResult.Hit:
                     panel.OccupationType = OccupationType.Hit;
+                    PriorOccupationType = OccupationType.Hit; // update prior
                     break;
 
                 default:
                     panel.OccupationType = OccupationType.Miss;
+                    PriorOccupationType = OccupationType.Miss; // update prior
                     break;
             }
         }

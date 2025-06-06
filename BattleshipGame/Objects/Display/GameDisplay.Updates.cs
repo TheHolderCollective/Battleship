@@ -22,8 +22,6 @@ namespace BattleshipGame.Objects.Display
             StringBuilder updatesText = new StringBuilder();
             List<string> shipUpdatesLog = gamePlayer1.ShipPlacementLogs;
 
-            //var lastFiveShipUpdates = shipUpdatesLog.Skip(Math.Max(0,shipUpdatesLog.Count - 6)); // remove magic number at some point
-
             foreach (var update in shipUpdatesLog)
             {
                 updatesText.AppendLine(update);
@@ -68,7 +66,6 @@ namespace BattleshipGame.Objects.Display
             gameLayout["Results"].Update(resultsPanel);
 
         }
-
         private ShipType GetShipType(string shipName)
         {
             ShipType shipType;

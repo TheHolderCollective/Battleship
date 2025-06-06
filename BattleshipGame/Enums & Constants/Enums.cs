@@ -53,7 +53,6 @@ namespace BattleshipGame
 
     public enum DisplayMode
     {
-        Demo,
         GamePlay,
         MainMenu,
         ShipPlacement,
@@ -61,11 +60,11 @@ namespace BattleshipGame
 
     public enum MainMenuItems
     {
-        [Description("Play Game")]
-        PlayGame,
+        [Description("New Game")]
+        NewGame,
 
-        [Description("Run Demo")]
-        RunDemo,
+        [Description("Resume Game")]
+        ResumeGame,
 
         [Description("Exit Game")]
         ExitGame

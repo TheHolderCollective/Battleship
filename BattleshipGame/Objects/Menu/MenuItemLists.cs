@@ -4,8 +4,8 @@
     {
         private static readonly string[] mainMenu =
         {
-            "Play Game",
-            "Run Demo",
+            "New Game",
+            "Resume Game",
             "Exit Game"
         };
 

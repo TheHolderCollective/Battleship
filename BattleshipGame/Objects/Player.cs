@@ -117,6 +117,7 @@ namespace BattleshipGame.Objects
         {
             PlaceCrosshairs(PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column);
         }
+
         private void PlaceCrosshairs(int row, int column)
         {
             // check boundaries
@@ -549,7 +550,7 @@ namespace BattleshipGame.Objects
             }
             return updatedShipCoordinates;
         }
-
+        
         private void SetPivotAndAdjacentPanelCounts(ShipType shipType,ref int pivotPanel, ref int beforePivotPanelCount, ref int afterPivotPanelCount)
         {   
             // pivot panel numbers are one less the actual pivot panel number due to the zero based index 
@@ -584,7 +585,7 @@ namespace BattleshipGame.Objects
                     break;
             }
         }
-
+        
         private ShipPlacements GetShipLocation(ShipType shipType)
         {
             // add exception handling
@@ -598,7 +599,7 @@ namespace BattleshipGame.Objects
             }
             return null; // check that this is ok
         }
-
+        
         private Ship GetShip(ShipType shipType)
         {
            // add exception handling
@@ -612,7 +613,7 @@ namespace BattleshipGame.Objects
 
             return null; // check that this is ok
         }
-
+        
         private Coordinates CalculateShipEndPoint(Ship ship, ShipOrientation shipOrientation ,Coordinates shipStart)
         {
             Coordinates shipEnd = new Coordinates(shipStart.Row, shipStart.Column);
@@ -634,7 +635,7 @@ namespace BattleshipGame.Objects
 
             return shipEnd;
         }
-
+        
         private bool IsShipWithinBounds(int startRow, int startCol, int endRow, int endCol)
         {
             if (startRow < 1 || startCol < 1 || endRow > (int) BoardDimensions.Height || endCol > (int) BoardDimensions.Width)
@@ -646,7 +647,7 @@ namespace BattleshipGame.Objects
                 return true;
             }
         }
-
+        
         private bool IsBoardRangeUnoccupied(List<GameBoardPanel> selectedPanels)
         {
             if (selectedPanels.Any(x => x.IsOccupied))
@@ -659,7 +660,7 @@ namespace BattleshipGame.Objects
             }
 
         }
-
+        
         public Coordinates FireManualShot()
         {
             RoundNumber++;
@@ -668,6 +669,7 @@ namespace BattleshipGame.Objects
 
             return coords;
         }
+        
         public Coordinates FireAutoShot()
         {
             // new
@@ -691,6 +693,7 @@ namespace BattleshipGame.Objects
 
             return coords;
         }
+        
         private Coordinates RandomShot()
         {
             var availablePanels = FiringBoard.GetOpenRandomPanels();
@@ -698,6 +701,7 @@ namespace BattleshipGame.Objects
             var panelID = rand.Next(availablePanels.Count);
             return availablePanels[panelID];
         }
+        
         private Coordinates SearchingShot()
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
@@ -705,6 +709,7 @@ namespace BattleshipGame.Objects
             var neighborID = rand.Next(hitNeighbors.Count);
             return hitNeighbors[neighborID];
         }
+        
         public ShotResult ProcessShot(Coordinates coords)
         {
             var panel = GameBoard.Panels.At(coords.Row, coords.Column);
@@ -731,7 +736,7 @@ namespace BattleshipGame.Objects
 
             return ShotResult.Hit;
         }
-
+        
         public void ProcessShotResult(Coordinates coords, ShotResult result)
         {
             var panel = FiringBoard.Panels.At(coords.Row, coords.Column);

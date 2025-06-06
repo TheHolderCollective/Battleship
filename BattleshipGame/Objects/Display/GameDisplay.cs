@@ -1,66 +1,37 @@
-﻿using BattleshipGame.Objects.GameMenu;
+﻿using BattleshipGame.Extensions;
+using BattleshipGame.Objects.GameMenu;
 using Spectre.Console;
 using System;
+using System.ComponentModel;
 
 namespace BattleshipGame.Objects.Display
 {
-    // TODO Add app config file to pull game settings rather than hard coding them
     public partial class GameDisplay
     {
-        private static Layout gameLayout;
-        private static Player gamePlayer1;
-        private static Player gamePlayer2;
+        private Layout gameLayout;
+        private LiveDisplay liveDisplay;
+        private Player gamePlayer1;
+        private Player gamePlayer2;
 
-        private static DisplayMode displayMode;
-        private static ShipPlacementMode shipPlacementMode;
-        private static Menu mainMenu;
-        private static Menu shipMenu;
-
-        private static int shipX;
-        private static int shipY;
-        private static ShipOrientation shipOrientation;
+        private DisplayMode displayMode;
+        private ShipPlacementMode shipPlacementMode;
+        private ShipOrientation shipOrientation;
+        private Menu mainMenu;
+        private Menu shipMenu;
 
         public GameDisplay(Player player1, Player player2)
         {
-            gamePlayer1 = player1;
-            gamePlayer2 = player2;
-            gamePlayer2.PlaceShipsRandomly();
-
-            //shipX = GameConstants.DefaultShipX;
-            //shipY = GameConstants.DefaultShipY;
-
-            mainMenu = new Menu(MenuItemLists.MainMenuItems);
-            shipMenu = new Menu(MenuItemLists.ShipMenuItems);
-
-            // At start up show Main menu
-            displayMode = DisplayMode.MainMenu;
-            
-            // for working on demo use:
-            //displayMode = DisplayMode.Demo;
-            gameLayout = CreateLayouts();
+            // Note - players and menus have to be setup before layouts can be created
+            SetupPlayers(player1, player2);
+            CreateMenus();
+            CreateAllGameLayouts();
+            SetDisplayMode(DisplayMode.MainMenu);
         }
         public void ShowDisplay()
         {
-            AnsiConsole.Clear();
-
-            // TODO Fix issues with window sizing which appear when game is launched using a maximized console
-            Console.WindowWidth = (int)((decimal)WindowDimensions.Width * GameConstants.WindowWidthScaleFactor);
-            Console.WindowHeight = (int)((decimal)WindowDimensions.Height * GameConstants.WindowHeightScaleFactor);
-            Console.CursorVisible = false;
-            //
-
-            LiveDisplay gameDisplay = AnsiConsole.Live(gameLayout);
-
-            gameDisplay.AutoClear(false);
-            gameDisplay.Overflow(VerticalOverflow.Ellipsis);
-            gameDisplay.Cropping(VerticalOverflowCropping.Top);
-
-            gameDisplay.Start(ctx =>
-            {
-                ActivateMainMenuMode();
-                ctx.Refresh();
-                ProcessUpdates(ctx);
-            });
+            SetupConsole();
+            SetupLiveDisplay(gameLayout);
+            StartLiveDisplay();
         }
         private void ProcessUpdates(LiveDisplayContext ctx)
         {
@@ -90,7 +61,6 @@ namespace BattleshipGame.Objects.Display
             {
                 case ConsoleKey.F1:
                     ActivateMainMenuMode();
-                    //ActivateDemoMode();
                     break;
                 case ConsoleKey.F2:
                     ProcessInputF2Key(displayMode);
@@ -122,6 +92,51 @@ namespace BattleshipGame.Objects.Display
                 default:
                     break;
             }
+        }
+        private void ProcessCurrentMainMenuSelection()
+        {
+            MainMenuItems mainMenuItem = MainMenuItems.NewGame;
+            string selectedMenuItem = mainMenuItem.GetAttributeOfType<DescriptionAttribute>().Description;
+
+            // update this code to take into account all options
+            if (mainMenu.SelectedItemName == selectedMenuItem)
+            {
+                ActivateShipPlacementMode();
+            }
+        }
+        private void ProcessShipPlacements(ShipPlacementMode spMode)
+        {
+            switch (spMode)
+            {
+                case ShipPlacementMode.SelectShip:
+                    ProcessCurrentShipMenuSelection();
+                    break;
+                case ShipPlacementMode.PositionShip:
+                    SetShipPlacementMode(ShipPlacementMode.SelectShip);
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void ProcessCurrentShipMenuSelection()
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+            bool shipNotPlaced = true;
+            int shipX, shipY;
+
+            while (shipNotPlaced)
+            {
+                shipX = rand.Next(1, 11);
+                shipY = rand.Next(1, 11);
+                shipOrientation = (ShipOrientation)rand.Next(0, 2);
+
+                shipNotPlaced = !gamePlayer1.PlaceShip(selectedShip, shipOrientation, shipX, shipY);
+            }
+
+            UpdateShipPlacementGameboard();
+            UpdateShipPlacementInfo();
+            SetShipPlacementMode(ShipPlacementMode.PositionShip);
         }
     }
 }

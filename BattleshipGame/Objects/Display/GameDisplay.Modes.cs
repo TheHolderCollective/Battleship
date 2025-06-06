@@ -1,6 +1,4 @@
 ﻿using Spectre.Console;
-using System.Numerics;
-using System;
 
 namespace BattleshipGame.Objects.Display
 {
@@ -10,26 +8,20 @@ namespace BattleshipGame.Objects.Display
         {
             DeactivateAllLayouts();
             gameLayout["StartScreen"].Visible();
-            displayMode = DisplayMode.MainMenu;
+            SetDisplayMode(DisplayMode.MainMenu);
         }
         private void ActivateShipPlacementMode()
         {
             DeactivateAllLayouts();
             gameLayout["ShipPlacementBoard"].Visible();
-            displayMode = DisplayMode.ShipPlacement;
-            shipPlacementMode = ShipPlacementMode.SelectShip;
+            SetDisplayMode(DisplayMode.ShipPlacement);
+            SetShipPlacementMode(ShipPlacementMode.SelectShip);
         }
         private void ActivateGamePlayMode()
         {
             DeactivateAllLayouts();
             gameLayout["GameBoard"].Visible();
-            displayMode = DisplayMode.GamePlay;
+            SetDisplayMode(DisplayMode.GamePlay);
         }
-        private void ActivateDemoMode()
-        {
-            DeactivateAllLayouts();
-            gameLayout["DemoBoard"].Visible();
-            displayMode = DisplayMode.Demo;
-        } 
     }
 }

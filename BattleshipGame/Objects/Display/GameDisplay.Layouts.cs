@@ -1,20 +1,18 @@
-﻿using Spectre.Console;
-using System;
-using BattleshipGame.Objects.GameMenu;
+﻿using System;
+using Spectre.Console;
 
 namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-        private static Layout CreateLayouts()
+        private Layout CreateLayouts()
         {
             var titleLayout = CreateDefaultTitleLayout();
             var startScreenLayout = CreateStartScreenLayout();
-            var boardLayout = CreateGameBoardLayout();         
+            var boardLayout = CreateGameBoardLayout();
             var shipPlacementLayout = CreateShipPlacementLayout();
-            var demoBoardlayout = CreateDemoLayout();
 
-            var gameLayout = new Layout().SplitRows(titleLayout, boardLayout, startScreenLayout, shipPlacementLayout, demoBoardlayout);
+            var gameLayout = new Layout().SplitRows(titleLayout, boardLayout, startScreenLayout, shipPlacementLayout);
             return gameLayout;
         }
         private void DeactivateAllLayouts()
@@ -22,15 +20,14 @@ namespace BattleshipGame.Objects.Display
             gameLayout["StartScreen"].Invisible();
             gameLayout["GameBoard"].Invisible();
             gameLayout["ShipPlacementBoard"].Invisible();
-            gameLayout["DemoBoard"].Invisible();
         }
 
         #region Game Title
-        private static Layout CreateDefaultTitleLayout()
+        private Layout CreateDefaultTitleLayout()
         {
             return CreateTitleLayout("[purple]");
         }
-        private static Layout CreateTitleLayout(string titleColor)
+        private Layout CreateTitleLayout(string titleColor)
         {
             var titleLayout = new Layout("Title");
 
@@ -46,7 +43,7 @@ namespace BattleshipGame.Objects.Display
         #endregion
 
         #region Main Layouts
-        private static Layout CreateStartScreenLayout()
+        private Layout CreateStartScreenLayout()
         {
 
             var mainMenuLayout = CreateMainMenuLayout();
@@ -57,9 +54,9 @@ namespace BattleshipGame.Objects.Display
             var startScreenLayout = new Layout("StartScreen").SplitRows(new Layout("Menu").SplitColumns(menuLeftBorderLayout, mainMenuLayout, menuRightBorderLayout), footerLayout);
             return startScreenLayout;
         }
-        private static Layout CreateGameBoardLayout()
+        private Layout CreateGameBoardLayout()
         {
-            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1,"PlayerGameBoard");
+            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1, "PlayerGameBoard");
             var firingBoardLayout = CreateFiringBoardLayout(gamePlayer1, "OpponentFiringBoard");
             var statusBoardLayout = CreateStatusBoardsLayout();
             var gameInfoLayout = CreateGameInfoLayout();
@@ -71,32 +68,21 @@ namespace BattleshipGame.Objects.Display
             var boardLayout = new Layout("GameBoard").SplitRows(playerBoardsLayout, gameInfoLayout);
             return boardLayout;
         }
-        private static Layout CreateShipPlacementLayout()
+        private Layout CreateShipPlacementLayout()
         {
-            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1,"ShipPlacementGameBoard");
+            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1, "ShipPlacementGameBoard");
             var shipSelectionMenuLayout = CreateShipSelectionMenuLayout();
             var shipPlacementInfoLayout = CreateShipPlacementInfoLayout();
 
             var shipPlacementLayout = new Layout("ShipPlacementBoard").SplitRows(new Layout("ShipPlacementSubBoard").SplitColumns(playerBoardLayout, shipSelectionMenuLayout), shipPlacementInfoLayout);
-            
+
             return shipPlacementLayout;
         }
-        private static Layout CreateDemoLayout()
-        {
-            var playerBoardLayout = CreatePlayerBoardLayout(gamePlayer1,"DemoGameboard");
-            var firingBoardLayout = CreateFiringBoardLayout(gamePlayer1, gamePlayer2.Name);
-            var statusBoardLayout = CreateStatusBoardsLayout();
 
-            var demoBoardLayout = new Layout("DemoBoard").SplitColumns(playerBoardLayout, firingBoardLayout, statusBoardLayout);
-
-            demoBoardLayout.Size((int)LayoutSize.Gameboard);
-            return demoBoardLayout;
-           
-        }
         #endregion
 
         #region Gameplay 
-        private static Layout CreatePlayerBoardLayout(Player player,string layoutName)
+        private Layout CreatePlayerBoardLayout(Player player, string layoutName)
         {
 
             var playerBoardLayout = new Layout(layoutName).MinimumSize(60);
@@ -110,7 +96,7 @@ namespace BattleshipGame.Objects.Display
 
             return playerBoardLayout;
         }
-        private static Layout CreateFiringBoardLayout(Player player, string layoutName)
+        private Layout CreateFiringBoardLayout(Player player, string layoutName)
         {
             var firingBoardLayout = new Layout(layoutName).MinimumSize(60);
 
@@ -123,7 +109,7 @@ namespace BattleshipGame.Objects.Display
 
             return firingBoardLayout;
         }
-        private static Layout CreateStatusBoardsLayout()
+        private Layout CreateStatusBoardsLayout()
         {
             var playerStatusLayout = CreatePlayerStatusLayout("PlayerStatus", "Status (" + gamePlayer1.Name + ")", gamePlayer1);
             var opponentStatusLayout = CreatePlayerStatusLayout("OpponentStatus", "Status (" + gamePlayer2.Name + ")", gamePlayer2);
@@ -132,7 +118,7 @@ namespace BattleshipGame.Objects.Display
 
             return statusBoardLayout;
         }
-        private static Layout CreatePlayerStatusLayout(string layoutName, string statusHeader, Player player)
+        private Layout CreatePlayerStatusLayout(string layoutName, string statusHeader, Player player)
         {
             var playerStatusLayout = new Layout(layoutName);
             var playerStatusText = GetShipStatusLists(player.Ships);
@@ -143,7 +129,7 @@ namespace BattleshipGame.Objects.Display
 
             return playerStatusLayout;
         }
-        private static Layout CreateGameInfoLayout()
+        private Layout CreateGameInfoLayout()
         {
             var resultsLayout = CreateResultsLayout();
             var targetInfoLayout = CreateTargetInfoLayout();
@@ -156,7 +142,7 @@ namespace BattleshipGame.Objects.Display
             return gameInfoLayout;
 
         }
-        private static Layout CreateTargetInfoLayout()
+        private Layout CreateTargetInfoLayout()
         {
             // TODO Determine how target info will be fed into panel
             var targetInfoLayout = new Layout("TargetInfo");
@@ -170,7 +156,7 @@ namespace BattleshipGame.Objects.Display
             return targetInfoLayout;
 
         }
-        private static Layout CreateTipsLayout()
+        private Layout CreateTipsLayout()
         {
             // TODO Find a way to pull in keyboard tips
             var tipsLayout = new Layout("Tips");
@@ -182,7 +168,7 @@ namespace BattleshipGame.Objects.Display
 
             return tipsLayout;
         }
-        private static Layout CreateResultsLayout()
+        private Layout CreateResultsLayout()
         {
             var resultsLayout = new Layout("Results");
             var resultsText = GetRoundResultsSummary(gamePlayer1, gamePlayer2);
@@ -196,16 +182,15 @@ namespace BattleshipGame.Objects.Display
         }
         #endregion
 
-        // TODO update texts used for ships
         #region Start Screen Sub Layouts
-        private static Layout CreateMainMenuLayout()
+        private Layout CreateMainMenuLayout()
         {
             var menuLayout = new Layout("MainMenu").MinimumSize(80);
             menuLayout.Update(mainMenu.GetMenuAsPanel());
 
             return menuLayout;
         }
-        private static Layout CreateMenuBorderLayout(string borderName)
+        private Layout CreateMenuBorderLayout(string borderName)
         {
             var menuBorderLayout = new Layout(borderName).MinimumSize(20);
 
@@ -216,7 +201,7 @@ namespace BattleshipGame.Objects.Display
             menuBorderLayout.Update(menuBorderPanel);
             return menuBorderLayout;
         }
-        private static Layout CreateFooterLayout()
+        private Layout CreateFooterLayout()
         {
             var footerLayout = new Layout("Footer");
 
@@ -230,26 +215,27 @@ namespace BattleshipGame.Objects.Display
         }
         #endregion
 
+        // TODO update texts used for ships
         #region Ship Selection/Placement
-        private static Layout CreateShipSelectionMenuLayout()
+        private Layout CreateShipSelectionMenuLayout()
         {
             var shipPlacementLayout = new Layout("ShipPlacementMenu").MinimumSize(60);
             shipPlacementLayout.Update(shipMenu.GetMenuAsPanel());
 
             return shipPlacementLayout;
         }
-        private static Layout CreateShipPlacementInfoLayout()
+        private Layout CreateShipPlacementInfoLayout()
         {
             var infoLayout = CreateShipPlacementUpdatesLayout();
             var tipsLayout = CreateTipsLayout();
 
-            var placementInfoLayout = new Layout("GameInfo").SplitColumns(infoLayout,tipsLayout);
+            var placementInfoLayout = new Layout("GameInfo").SplitColumns(infoLayout, tipsLayout);
             placementInfoLayout.Size((int)LayoutSize.GameInfo);
 
             return placementInfoLayout;
 
         }
-        private static Layout CreateShipPlacementUpdatesLayout()
+        private Layout CreateShipPlacementUpdatesLayout()
         {
             var updatesLayout = new Layout("ShipPlacementInfo");
             var updatesText = ""; // update this text

@@ -8,7 +8,7 @@ namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-        private void PlayRound()
+        private void PlayRound() // TODO update this so that game ends properly
         {
             var coordinates = gamePlayer1.FireManualShot();
             var result = gamePlayer2.ProcessShot(coordinates);

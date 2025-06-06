@@ -1,5 +1,6 @@
-﻿using Spectre.Console;
-using System;
+﻿using System;
+using System.ComponentModel;
+using BattleshipGame.Extensions;
 
 namespace BattleshipGame.Objects.Display
 {
@@ -22,51 +23,6 @@ namespace BattleshipGame.Objects.Display
                     break;
             }
         }
-
-        private void ProcessCurrentMainMenuSelection()
-        {
-			if (mainMenu.SelectedItemName == "Play Game") // change this to use enums
-			{
-				ActivateShipPlacementMode();
-            }
-		}
-
-        private void ProcessShipPlacements(ShipPlacementMode spMode)
-        {
-            switch (spMode)
-            {
-                case ShipPlacementMode.SelectShip:
-                    ProcessCurrentShipMenuSelection();
-                    break;
-                case ShipPlacementMode.PositionShip:
-                    shipPlacementMode = ShipPlacementMode.SelectShip;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void ProcessCurrentShipMenuSelection()
-        {
-            Random rand = new Random(Guid.NewGuid().GetHashCode());
-            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-            bool shipNotPlaced = true;
-
-            while (shipNotPlaced)
-            {
-                shipX = rand.Next(1, 11);
-                shipY = rand.Next(1, 11);
-                shipOrientation = (ShipOrientation)rand.Next(0, 2);
-
-                shipNotPlaced = !gamePlayer1.PlaceShip(selectedShip, shipOrientation, shipX, shipY);
-            }
-
-            UpdateShipPlacementGameboard();
-            UpdateShipPlacementInfo();
-            shipPlacementMode = ShipPlacementMode.PositionShip;
-
-        }
-
 		#endregion
 
 		#region Spacebar Processing
@@ -99,7 +55,6 @@ namespace BattleshipGame.Objects.Display
                     break;
             }
         }
-
         #endregion
 
         #region Function Key Processing
@@ -257,25 +212,5 @@ namespace BattleshipGame.Objects.Display
         }
         #endregion
 
-        private void ProcessInputBackspaceKey(DisplayMode displayMode)
-        {
-            switch (displayMode)
-            {
-                case DisplayMode.ShipPlacement:
-                    switch (shipPlacementMode)
-                    {
-                        case ShipPlacementMode.SelectShip:
-                            break;
-                        case ShipPlacementMode.PositionShip:
-                            shipPlacementMode = ShipPlacementMode.SelectShip;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
     }
 }

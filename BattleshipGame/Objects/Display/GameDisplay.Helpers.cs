@@ -1,15 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
-using BattleshipGame;
-using BattleshipGame.Extensions;
+using BattleshipGame.Objects.GameMenu;
+using Spectre.Console;
 
 namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-        private static string GetRoundResultsSummary(Player player1, Player player2)
+        #region Helpers for constructor
+        private void SetupPlayers(Player player1, Player player2)
+        {
+            gamePlayer1 = player1;
+            gamePlayer2 = player2;
+            gamePlayer2.PlaceShipsRandomly();
+        }
+        private void CreateMenus()
+        {
+            mainMenu = new Menu(MenuItemLists.MainMenuItems);
+            shipMenu = new Menu(MenuItemLists.ShipMenuItems);
+        }
+        private void CreateAllGameLayouts()
+        {
+            gameLayout = CreateLayouts();
+        }
+        #endregion
+
+        #region Helpers for updating game modes
+        private void SetDisplayMode(DisplayMode mode)
+        {
+            displayMode = mode; 
+        }
+        private void SetShipPlacementMode(ShipPlacementMode mode)
+        {
+            shipPlacementMode = mode;
+        }
+        #endregion
+
+        #region Helpers for setting up the display
+        private void SetupConsole()
+        {
+            // TODO Fix issues with window sizing which appear when game is launched using a maximized console
+            AnsiConsole.Clear();
+            Console.WindowWidth = (int)((decimal)WindowDimensions.Width * GameConstants.WindowWidthScaleFactor);
+            Console.WindowHeight = (int)((decimal)WindowDimensions.Height * GameConstants.WindowHeightScaleFactor);
+            Console.CursorVisible = false;
+        }
+        private void SetupLiveDisplay(Layout layout)
+        {
+            liveDisplay = AnsiConsole.Live(layout);
+            liveDisplay.AutoClear(false);
+            liveDisplay.Overflow(VerticalOverflow.Ellipsis);
+            liveDisplay.Cropping(VerticalOverflowCropping.Top);
+        }
+        private void StartLiveDisplay()
+        {
+            liveDisplay.Start(ctx =>
+            {
+                ActivateMainMenuMode();
+                ctx.Refresh();
+                ProcessUpdates(ctx);
+            });
+        }
+        #endregion
+
+        #region Helpers for Layouts
+        private string GetRoundResultsSummary(Player player1, Player player2)
         {
             StringBuilder resultsText = new StringBuilder();
 
@@ -31,7 +87,7 @@ namespace BattleshipGame.Objects.Display
 
             return resultsText.ToString();
         }
-        private static string GetShipStatusLists(List<Ship> shipsList)
+        private string GetShipStatusLists(List<Ship> shipsList)
         {
             StringBuilder shipStatus = new StringBuilder();
 
@@ -49,7 +105,7 @@ namespace BattleshipGame.Objects.Display
             return shipStatus.ToString();
 
         }
-        private static string MakeGameBoard(Player player)
+        private string MakeGameBoard(Player player)
         {
             StringBuilder flattenedGameBoard = new StringBuilder();
             int gameBoardSize = (int)BoardDimensions.Width;
@@ -71,13 +127,13 @@ namespace BattleshipGame.Objects.Display
 
             return flattenedGameBoard.ToString();
         }
-        private static string MakeFiringBoard(Player player)
+        private string MakeFiringBoard(Player player)
         {
             StringBuilder flattenedFiringBoard = new StringBuilder();
             int gameBoardSize = (int)BoardDimensions.Width;
             var firingBoard = player.OutputFiringBoard();
             string padding = "  ";
-            
+
             for (int i = 0; i < gameBoardSize; i++)
             {
                 string boardLine = string.Empty;
@@ -93,7 +149,7 @@ namespace BattleshipGame.Objects.Display
 
             return flattenedFiringBoard.ToString();
         }
-        private static string AddMarkupToGameboardPanel(string gameBoardPanel, string padding)
+        private string AddMarkupToGameboardPanel(string gameBoardPanel, string padding)
         {
             string panelWithMarkup = String.Empty;
             string shipMarkupTag = "[green]";
@@ -131,5 +187,7 @@ namespace BattleshipGame.Objects.Display
 
             return panelWithMarkup;
         }
+        #endregion
+
     }
 }

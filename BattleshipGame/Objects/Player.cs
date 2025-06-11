@@ -661,12 +661,18 @@ namespace BattleshipGame.Objects
 
         }
         
+        public bool IsShotAvailable()
+        {
+            bool targetPanelAvailable = (PriorOccupationType == OccupationType.Empty) ? true : false;
+
+            return targetPanelAvailable;
+        }
+
         public Coordinates FireManualShot()
         {
             RoundNumber++;
             Coordinates coords = new Coordinates(PriorCrosshairsPosition.Row, PriorCrosshairsPosition.Column);
             FiredShot = String.Format(Name + " says: \"Firing shot at " + coords.Row.ToString() + ", " + coords.Column.ToString() + "\"");
-
             return coords;
         }
         

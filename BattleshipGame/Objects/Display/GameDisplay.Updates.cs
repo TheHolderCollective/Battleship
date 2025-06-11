@@ -57,6 +57,14 @@ namespace BattleshipGame.Objects.Display
           
             gameLayout["PlayerGameBoard"].Update(playerBoardPanel);
         }
+        private void UpdateStatusboards()
+        {
+            var playerStatusPanel = CreatePlayerStatusPanel("Status (" + gamePlayer1.Name + ")", gamePlayer1);
+            var opponentStatusPanel = CreatePlayerStatusPanel("Status (" + gamePlayer2.Name + ")", gamePlayer2);
+
+            gameLayout["PlayerStatus"].Update(playerStatusPanel);
+            gameLayout["OpponentStatus"].Update(opponentStatusPanel);
+        }
         private void UpdateBattleResults()
         {
             var resultsText = GetRoundResultsSummary(gamePlayer1, gamePlayer2);

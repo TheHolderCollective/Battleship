@@ -113,7 +113,6 @@ namespace BattleshipGame.Objects.Display
         {
             var playerStatusLayout = CreatePlayerStatusLayout("PlayerStatus", "Status (" + gamePlayer1.Name + ")", gamePlayer1);
             var opponentStatusLayout = CreatePlayerStatusLayout("OpponentStatus", "Status (" + gamePlayer2.Name + ")", gamePlayer2);
-
             var statusBoardLayout = new Layout("StatusBoard").SplitRows(playerStatusLayout, opponentStatusLayout);
 
             return statusBoardLayout;
@@ -121,13 +120,18 @@ namespace BattleshipGame.Objects.Display
         private Layout CreatePlayerStatusLayout(string layoutName, string statusHeader, Player player)
         {
             var playerStatusLayout = new Layout(layoutName);
+            var playerStatusPanel = CreatePlayerStatusPanel(statusHeader, player);
+            playerStatusLayout.Update(playerStatusPanel);
+
+            return playerStatusLayout;
+        }
+        private Panel CreatePlayerStatusPanel(string statusHeader, Player player)
+        {
             var playerStatusText = GetShipStatusLists(player.Ships);
             var playerStatusMarkup = new Markup(playerStatusText).LeftJustified();
             var playerStatusPanel = new Panel(playerStatusMarkup).Expand().Header(statusHeader).HeaderAlignment(Justify.Center);
 
-            playerStatusLayout.Update(playerStatusPanel);
-
-            return playerStatusLayout;
+            return playerStatusPanel;
         }
         private Layout CreateGameInfoLayout()
         {

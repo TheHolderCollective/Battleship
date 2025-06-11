@@ -25,7 +25,6 @@ namespace BattleshipGame.Objects.Boards
                 return OccupationType.GetAttributeOfType<DescriptionAttribute>().Description;
             }
         }
-
         public bool IsOccupied
         {
             get
@@ -37,7 +36,6 @@ namespace BattleshipGame.Objects.Boards
                     || OccupationType == OccupationType.Carrier;
             }
         }
-
         public bool IsRandomAvailable
         {
             get

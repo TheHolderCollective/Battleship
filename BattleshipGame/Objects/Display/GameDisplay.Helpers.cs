@@ -20,7 +20,7 @@ namespace BattleshipGame.Objects.Display
             mainMenu = new Menu(MenuItemLists.MainMenuItems);
             shipMenu = new Menu(MenuItemLists.ShipMenuItems);
         }
-        private void CreateAllGameLayouts()
+        private void CreateGameLayouts()
         {
             gameLayout = CreateLayouts();
         }

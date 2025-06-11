@@ -24,7 +24,7 @@ namespace BattleshipGame.Objects.Display
             // Note - players and menus have to be setup before layouts can be created
             SetupPlayers(player1, player2);
             CreateMenus();
-            CreateAllGameLayouts();
+            CreateGameLayouts();
             SetDisplayMode(DisplayMode.MainMenu);
         }
         public void ShowDisplay()

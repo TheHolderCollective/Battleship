@@ -35,6 +35,7 @@ namespace BattleshipGame.Objects.Display
                     UpdateGameboard();
                     UpdateFiringBoard();
                     UpdateBattleResults();
+                    UpdateStatusboards();
                     break;
                 case DisplayMode.ShipPlacement:
                     switch (shipPlacementMode)

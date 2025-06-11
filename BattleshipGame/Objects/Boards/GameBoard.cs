@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Spectre.Console;
+using System.Collections.Generic;
 
 namespace BattleshipGame.Objects.Boards
 {
@@ -19,6 +20,13 @@ namespace BattleshipGame.Objects.Boards
                     Panels.Add(new GameBoardPanel(i, j));
                 }
             }
+        }
+
+        // remove this if not used
+        public GameBoardPanel GetGameBoardPanelAt(Coordinates coords)
+        {
+            int listIndex = (coords.Row - 1) * 10 + (coords.Column - 1);
+            return Panels[listIndex];
         }
     }
 }

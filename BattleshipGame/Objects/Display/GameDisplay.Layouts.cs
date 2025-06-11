@@ -140,7 +140,7 @@ namespace BattleshipGame.Objects.Display
             var tipsLayout = CreateTipsLayout();
 
 
-            var gameInfoLayout = new Layout("GameInfo").SplitColumns(resultsLayout, targetInfoLayout, tipsLayout);
+            var gameInfoLayout = new Layout("GameInfo").SplitColumns(resultsLayout, tipsLayout, targetInfoLayout);
             gameInfoLayout.Size((int)LayoutSize.GameInfo);
 
             return gameInfoLayout;
@@ -154,7 +154,6 @@ namespace BattleshipGame.Objects.Display
             var targetMarkup = new Markup(targetText.ToString()).LeftJustified();
             var targetPanel = new Panel(targetMarkup).Expand().Header("Targeting Dashboard").HeaderAlignment(Justify.Center);
 
-            targetInfoLayout.MinimumSize(60);
             targetInfoLayout.Update(targetPanel);
 
             return targetInfoLayout;
@@ -168,6 +167,7 @@ namespace BattleshipGame.Objects.Display
             var tipsMarkup = new Markup(tipsText.ToString()).LeftJustified();
             var tipsPanel = new Panel(tipsMarkup).Expand().Header("Keyboard Tips").HeaderAlignment(Justify.Center);
 
+            tipsLayout.MinimumSize(60);
             tipsLayout.Update(tipsPanel);
 
             return tipsLayout;

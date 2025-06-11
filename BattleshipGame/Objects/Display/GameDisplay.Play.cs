@@ -4,7 +4,7 @@
     {
         private void PlayRound() // figure out how to end game right after computer wins
         {
-            if (gamePlayer1.IsShotAvailable())
+            if (gamePlayer1.IsShotAvailable() && gameStatus != GameStatus.GameOver)
             {
                 if (gamePlayer1.HasLost)
                 {

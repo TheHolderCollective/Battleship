@@ -6,26 +6,30 @@ namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-		#region Enter Key Processing
-		private void ProcessInputEnterKey(DisplayMode displayMode)
+        #region Enter Key Processing
+        private void ProcessInputEnterKey(DisplayMode displayMode)
         {
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
+                    if (gameStatus == GameStatus.GameOver)
+                    {
+                        ActivateMainMenuMode();
+                    }
                     break;
                 case DisplayMode.MainMenu:
                     ProcessCurrentMainMenuSelection();
-					break;
+                    break;
                 case DisplayMode.ShipPlacement:
                     ProcessShipPlacements(shipPlacementMode);
-					break;
+                    break;
                 default:
                     break;
             }
         }
-		#endregion
+        #endregion
 
-		#region Spacebar Processing
+        #region Spacebar Processing
         private void ProcessInputSpacebar(DisplayMode displayMode)
         {
             switch (displayMode)
@@ -55,12 +59,29 @@ namespace BattleshipGame.Objects.Display
         #endregion
 
         #region Function Key Processing
+        private void ProcessInputF1Key()
+        {
+            switch (gameStatus)
+            {
+                case GameStatus.ShipPlacementInProgress:
+                    SetGameStatus(GameStatus.SuspendedShipPlacement);
+                    break;
+                case GameStatus.BattleInProgress:
+                    SetGameStatus(GameStatus.SuspendedBattle);
+                    break;
+                case GameStatus.GameOver:
+                    SetGameStatus(GameStatus.NotStarted);
+                    break;
+                default:
+                    break;
+            }
+            ActivateMainMenuMode();
+        }
+
         private void ProcessInputF2Key(DisplayMode displayMode)
         {
             switch (displayMode)
             {
-                case DisplayMode.MainMenu:
-
                 case DisplayMode.ShipPlacement:
                     if (gamePlayer1.ShipLocations.Count == GameConstants.ShipTotal)
                     {

@@ -71,7 +71,7 @@ namespace BattleshipGame.Objects.Display
 
             switch (gameStatus)
             {
-                case GameStatus.GameInProgress:
+                case GameStatus.BattleInProgress:
                     resultsPanel = CreateResultsPanelForBattleUpdates(gamePlayer1, gamePlayer2);
                     gameLayout["Results"].Update(resultsPanel);
                     break;

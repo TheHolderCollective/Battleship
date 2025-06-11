@@ -72,23 +72,24 @@ namespace BattleshipGame.Objects.Display
         private string GetRoundResultsSummary(Player player1, Player player2)
         {
             StringBuilder resultsText = new StringBuilder();
-
-            resultsText.AppendLine("Round " + player1.RoundNumber + " - " + player1.FiredShot);
-            resultsText.AppendLine("Round " + player2.RoundNumber + " - " + player2.ReceivedShot);
-
-            if (player2.ShipStatus != String.Empty)
+            if (player1.RoundNumber > 0 )
             {
-                resultsText.AppendLine("Round " + player2.RoundNumber + " - " + player2.ShipStatus);
+                resultsText.AppendLine("Round " + player1.RoundNumber + " - " + player1.FiredShot);
+                resultsText.AppendLine("Round " + player2.RoundNumber + " - " + player2.ReceivedShot);
+
+                if (player2.ShipStatus != String.Empty)
+                {
+                    resultsText.AppendLine("Round " + player2.RoundNumber + " - " + player2.ShipStatus);
+                }
+
+                resultsText.AppendLine("Round " + player2.RoundNumber + " - " + player2.FiredShot);
+                resultsText.AppendLine("Round " + player1.RoundNumber + " - " + player1.ReceivedShot);
+
+                if (player1.ShipStatus != String.Empty)
+                {
+                    resultsText.AppendLine("Round " + player1.RoundNumber + " - " + player1.ShipStatus);
+                }
             }
-
-            resultsText.AppendLine("Round " + player2.RoundNumber + " - " + player2.FiredShot);
-            resultsText.AppendLine("Round " + player1.RoundNumber + " - " + player1.ReceivedShot);
-
-            if (player1.ShipStatus != String.Empty)
-            {
-                resultsText.AppendLine("Round " + player1.RoundNumber + " - " + player1.ShipStatus);
-            }
-
             return resultsText.ToString();
         }
         private string GetShipStatusLists(List<Ship> shipsList)

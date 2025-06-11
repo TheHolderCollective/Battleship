@@ -16,12 +16,14 @@ namespace BattleshipGame.Objects.Display
             gameLayout["ShipPlacementBoard"].Visible();
             SetDisplayMode(DisplayMode.ShipPlacement);
             SetShipPlacementMode(ShipPlacementMode.SelectShip);
+            SetGameStatus(GameStatus.ShipPlacementInProgress);
         }
         private void ActivateGamePlayMode()
         {
             DeactivateAllLayouts();
             gameLayout["GameBoard"].Visible();
             SetDisplayMode(DisplayMode.GamePlay);
+            SetGameStatus(GameStatus.BattleInProgress);
         }
     }
 }

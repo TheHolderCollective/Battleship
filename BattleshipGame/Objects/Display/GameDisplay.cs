@@ -28,7 +28,7 @@ namespace BattleshipGame.Objects.Display
             CreateMenus();
             CreateGameLayouts();
             SetDisplayMode(DisplayMode.MainMenu);
-            SetGameStatus(GameStatus.GameInProgress);
+            SetGameStatus(GameStatus.NotStarted);
         }
         public void ShowDisplay()
         {
@@ -49,8 +49,8 @@ namespace BattleshipGame.Objects.Display
 
                     if (keyPressed == ConsoleKey.Escape)
                     {
-                       continuePlaying = false;
-                       continue;
+                        continuePlaying = false;
+                        continue;
                     }
 
                     ProcessPlayerInputs(keyPressed);
@@ -63,7 +63,7 @@ namespace BattleshipGame.Objects.Display
             switch (keyPressed)
             {
                 case ConsoleKey.F1:
-                    ActivateMainMenuMode();
+                    ProcessInputF1Key();
                     break;
                 case ConsoleKey.F2:
                     ProcessInputF2Key(displayMode);
@@ -99,22 +99,37 @@ namespace BattleshipGame.Objects.Display
         private void ProcessCurrentMainMenuSelection()
         {
             MainMenuItems mainMenuItem = mainMenu.GetSelectedItem();
-            
+
             // update this code to take into account all options
             switch (mainMenuItem)
             {
                 case MainMenuItems.NewGame: // figure out how to reset game for new game option
+                    SetGameStatus(GameStatus.ShipPlacementInProgress);
                     ActivateShipPlacementMode();
                     break;
                 case MainMenuItems.ResumeGame:
-                    ActivateGamePlayMode();
+                    switch (gameStatus)
+                    {
+                        case GameStatus.SuspendedShipPlacement:
+                            SetGameStatus(GameStatus.ShipPlacementInProgress);
+                            ActivateShipPlacementMode();
+                            break;
+                        case GameStatus.SuspendedBattle:
+                            SetGameStatus(GameStatus.BattleInProgress);
+                            ActivateGamePlayMode();
+                            break;
+                        case GameStatus.GameOver:
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case MainMenuItems.ExitGame:
                     break;
                 default:
                     break;
             }
-           
+
         }
         private void ProcessShipPlacements(ShipPlacementMode spMode)
         {

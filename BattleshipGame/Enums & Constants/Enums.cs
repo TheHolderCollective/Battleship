@@ -118,8 +118,11 @@ namespace BattleshipGame
 
     public enum GameStatus
     {
-        GameNotStarted,
-        GameInProgress,
+        NotStarted,
+        ShipPlacementInProgress,
+        SuspendedShipPlacement,
+        BattleInProgress,
+        SuspendedBattle,
         GameOver,
     }
 }

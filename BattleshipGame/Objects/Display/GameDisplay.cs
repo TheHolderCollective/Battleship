@@ -46,13 +46,6 @@ namespace BattleshipGame.Objects.Display
                 if (Console.KeyAvailable)
                 {
                     ConsoleKey keyPressed = Console.ReadKey(true).Key;
-
-                    if (keyPressed == ConsoleKey.Escape)
-                    {
-                        continuePlaying = false;
-                        continue;
-                    }
-
                     ProcessPlayerInputs(keyPressed);
                     ctx.Refresh();
                 }
@@ -67,9 +60,6 @@ namespace BattleshipGame.Objects.Display
                     break;
                 case ConsoleKey.F2:
                     ProcessInputF2Key(displayMode);
-                    break;
-                case ConsoleKey.F3:
-                    ActivateShipPlacementMode();
                     break;
                 case ConsoleKey.F4:
                     ProcessInputF4Key(displayMode);
@@ -125,6 +115,7 @@ namespace BattleshipGame.Objects.Display
                     }
                     break;
                 case MainMenuItems.ExitGame:
+                    System.Environment.Exit(0);
                     break;
                 default:
                     break;

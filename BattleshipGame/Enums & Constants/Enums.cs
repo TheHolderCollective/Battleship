@@ -69,7 +69,6 @@ namespace BattleshipGame
         [Description("Exit Game")]
         ExitGame
     }
-
     public enum ShipType
     {
         [Description("Carrier")]
@@ -115,5 +114,12 @@ namespace BattleshipGame
     {
         Width = 10,
         Height = 10
+    }
+
+    public enum GameStatus
+    {
+        GameNotStarted,
+        GameInProgress,
+        GameOver,
     }
 }

@@ -1,29 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BattleshipGame.Objects.Display
+﻿namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
-        private void PlayRound() // TODO update this so that game ends properly
+        private void PlayRound() // figure out how to end game right after computer wins
         {
             if (gamePlayer1.IsShotAvailable())
             {
-                var coordinates = gamePlayer1.FireManualShot();
-                var result = gamePlayer2.ProcessShot(coordinates);
-                gamePlayer1.ProcessShotResult(coordinates, result);
-
-
-                if (!gamePlayer2.HasLost) //If player 2 already lost, we can't let them take another turn.
+                if (gamePlayer1.HasLost)
                 {
-                    coordinates = gamePlayer2.FireAutoShot();
-                    result = gamePlayer1.ProcessShot(coordinates);
-                    gamePlayer2.ProcessShotResult(coordinates, result);
+                    SetGameStatus(GameStatus.GameOver);
+                    victoriousPlayer = gamePlayer2;
+                    return;
                 }
+                FireShotHumanPlayer();
+
+                if (gamePlayer2.HasLost)
+                {
+                    SetGameStatus(GameStatus.GameOver);
+                    victoriousPlayer = gamePlayer1;
+                    return;
+                }
+                FireShotComputerPlayer();
             }
+        }
+
+        private void FireShotHumanPlayer()
+        {
+            var coordinates = gamePlayer1.FireManualShot();
+            var result = gamePlayer2.ProcessShot(coordinates);
+            gamePlayer1.ProcessShotResult(coordinates, result);
+        }
+
+        private void FireShotComputerPlayer()
+        {
+           var coordinates = gamePlayer2.FireAutoShot();
+           var result = gamePlayer1.ProcessShot(coordinates);
+           gamePlayer2.ProcessShotResult(coordinates, result);
         }
     }
 }

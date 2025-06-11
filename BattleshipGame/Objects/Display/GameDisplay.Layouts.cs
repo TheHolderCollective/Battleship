@@ -173,16 +173,31 @@ namespace BattleshipGame.Objects.Display
             return tipsLayout;
         }
         private Layout CreateResultsLayout()
+        
         {
             var resultsLayout = new Layout("Results");
-            var resultsText = GetRoundResultsSummary(gamePlayer1, gamePlayer2);
-            var resultsMarkup = new Markup(resultsText.ToString()).LeftJustified();
-            var resultsPanel = new Panel(resultsMarkup).Expand().Header("Battle Updates").HeaderAlignment(Justify.Center);
+            var resultsPanel = CreateResultsPanelForBattleUpdates(gamePlayer1, gamePlayer2);
 
             resultsLayout.MinimumSize(60);
             resultsLayout.Update(resultsPanel);
 
             return resultsLayout;
+        }
+        private Panel CreateResultsPanelForBattleUpdates(Player player1, Player player2)
+        {
+            var resultsText = GetRoundResultsSummary(player1, player2);
+            var resultsMarkup = new Markup(resultsText.ToString()).LeftJustified();
+            var resultsPanel = new Panel(resultsMarkup).Expand().Header("Battle Updates").HeaderAlignment(Justify.Center);
+
+            return resultsPanel;
+        }
+        private Panel CreateResultsPanelForGameOver(Player player)
+        {
+            var resultsText = $"> [purple]Game over![/] \n> [purple]{player.Name} wins![/]";
+            var resultsMarkup = new Markup(resultsText.ToString()).LeftJustified();
+            var resultsPanel = new Panel(resultsMarkup).Expand().Header("Battle Updates").HeaderAlignment(Justify.Center);
+
+            return resultsPanel;
         }
         #endregion
 

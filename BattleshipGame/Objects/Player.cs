@@ -143,7 +143,7 @@ namespace BattleshipGame.Objects
 
             PriorCrosshairsPosition = new Coordinates(row, column);
         }
-        
+
         public void MoveCrosshairs(Direction direction)
         {
             int row = PriorCrosshairsPosition.Row;
@@ -169,7 +169,7 @@ namespace BattleshipGame.Objects
 
             PlaceCrosshairs(row, col);
         }
-        
+ 
         public void PlaceShipsRandomly()
         {
             if (ShipsAlreadyPlaced)

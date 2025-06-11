@@ -26,7 +26,11 @@ namespace BattleshipGame.Objects.Display
         }
         #endregion
 
-        #region Helpers for updating game modes
+        #region Helpers for updating game modes and statuses
+        private void SetGameStatus(GameStatus status)
+        {
+            gameStatus = status;
+        }
         private void SetDisplayMode(DisplayMode mode)
         {
             displayMode = mode; 

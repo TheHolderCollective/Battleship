@@ -56,7 +56,7 @@ namespace BattleshipGame.Objects.Display
             var playerBoardPanel = new Panel(playerBoardText).Expand().Header("Player Board").HeaderAlignment(Justify.Center);
           
             gameLayout["PlayerGameBoard"].Update(playerBoardPanel);
-        }
+        }  
         private void UpdateStatusboards()
         {
             var playerStatusPanel = CreatePlayerStatusPanel("Status (" + gamePlayer1.Name + ")", gamePlayer1);
@@ -67,12 +67,29 @@ namespace BattleshipGame.Objects.Display
         }
         private void UpdateBattleResults()
         {
-            var resultsText = GetRoundResultsSummary(gamePlayer1, gamePlayer2);
-            var resultsMarkup = new Markup(resultsText.ToString()).LeftJustified();
-            var resultsPanel = new Panel(resultsMarkup).Expand().Header("Battle Updates").HeaderAlignment(Justify.Center);
+            Panel resultsPanel;
 
-            gameLayout["Results"].Update(resultsPanel);
-
+            switch (gameStatus)
+            {
+                case GameStatus.GameInProgress:
+                    resultsPanel = CreateResultsPanelForBattleUpdates(gamePlayer1, gamePlayer2);
+                    gameLayout["Results"].Update(resultsPanel);
+                    break;
+                case GameStatus.GameOver:
+                    resultsPanel = CreateResultsPanelForGameOver(victoriousPlayer);
+                    gameLayout["Results"].Update(resultsPanel);
+                    break;
+                default:
+                    break;
+            }
+        }
+        private void UpdateGamePlayOutputs()
+        {
+            PlayRound();
+            UpdateGameboard();
+            UpdateFiringBoard();
+            UpdateBattleResults();
+            UpdateStatusboards();
         }
         private ShipType GetShipType(string shipName)
         {

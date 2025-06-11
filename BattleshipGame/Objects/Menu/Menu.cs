@@ -6,18 +6,17 @@ namespace BattleshipGame.Objects.GameMenu
 {
     internal class Menu
     {
-        public int CurrentSelection { get; set; }
-
+        private int CurrentItemIndex { get; set; }
         public string SelectedItemName
         {
             get
             {
-                return menuItemList[CurrentSelection].ItemName;
+                return menuItemList[CurrentItemIndex].ItemName;
             }
         }
 
         private List<MenuItem> menuItemList;
-        
+
         public Menu(string[] menuItems)
         {
             menuItemList = new List<MenuItem>();
@@ -30,7 +29,7 @@ namespace BattleshipGame.Objects.GameMenu
 
             // select first item by default
             menuItemList[0].IsSelected = true;
-            CurrentSelection = 0;
+            CurrentItemIndex = 0;
         }
 
         public void AddMenuItem(MenuItem item)
@@ -38,7 +37,7 @@ namespace BattleshipGame.Objects.GameMenu
             if (menuItemList == null)
             {
                 menuItemList = new List<MenuItem>();
-                CurrentSelection = 0;
+                CurrentItemIndex = 0;
             }
 
             menuItemList.Add(item);
@@ -46,27 +45,27 @@ namespace BattleshipGame.Objects.GameMenu
 
         public void SelectNextItem()
         {
-            int nextSelection = CurrentSelection + 1;
+            int nextSelection = CurrentItemIndex + 1;
             int maxSelection = menuItemList.Count - 1;
 
             if (nextSelection <= maxSelection)
             {
-                menuItemList[CurrentSelection].IsSelected = false;
-                CurrentSelection++;
-                menuItemList[CurrentSelection].IsSelected = true;
+                menuItemList[CurrentItemIndex].IsSelected = false;
+                CurrentItemIndex++;
+                menuItemList[CurrentItemIndex].IsSelected = true;
             }
         }
 
         public void SelectPreviousItem()
         {
-            int nextSelection = CurrentSelection -1;
+            int nextSelection = CurrentItemIndex -1;
             int minSelection = 0;
 
             if (nextSelection >= minSelection)
             {
-                menuItemList[CurrentSelection].IsSelected = false;
-                CurrentSelection--;
-                menuItemList[CurrentSelection].IsSelected = true;
+                menuItemList[CurrentItemIndex].IsSelected = false;
+                CurrentItemIndex--;
+                menuItemList[CurrentItemIndex].IsSelected = true;
             }
         }
 
@@ -78,6 +77,10 @@ namespace BattleshipGame.Objects.GameMenu
             return menuPanel;
         }
 
+        public MainMenuItems GetSelectedItem()
+        {
+            return (MainMenuItems)CurrentItemIndex;
+        }
         private string CreateMenuMarkup()
         {
             string verticalSpacing = "\n\n\n";

@@ -12,7 +12,9 @@ namespace BattleshipGame.Objects.Display
         private LiveDisplay liveDisplay;
         private Player gamePlayer1;
         private Player gamePlayer2;
+        private Player victoriousPlayer;
 
+        private GameStatus gameStatus;
         private DisplayMode displayMode;
         private ShipPlacementMode shipPlacementMode;
         private ShipOrientation shipOrientation;
@@ -26,6 +28,7 @@ namespace BattleshipGame.Objects.Display
             CreateMenus();
             CreateGameLayouts();
             SetDisplayMode(DisplayMode.MainMenu);
+            SetGameStatus(GameStatus.GameInProgress);
         }
         public void ShowDisplay()
         {
@@ -95,14 +98,23 @@ namespace BattleshipGame.Objects.Display
         }
         private void ProcessCurrentMainMenuSelection()
         {
-            MainMenuItems mainMenuItem = MainMenuItems.NewGame;
-            string selectedMenuItem = mainMenuItem.GetAttributeOfType<DescriptionAttribute>().Description;
-
+            MainMenuItems mainMenuItem = mainMenu.GetSelectedItem();
+            
             // update this code to take into account all options
-            if (mainMenu.SelectedItemName == selectedMenuItem)
+            switch (mainMenuItem)
             {
-                ActivateShipPlacementMode();
+                case MainMenuItems.NewGame: // figure out how to reset game for new game option
+                    ActivateShipPlacementMode();
+                    break;
+                case MainMenuItems.ResumeGame:
+                    ActivateGamePlayMode();
+                    break;
+                case MainMenuItems.ExitGame:
+                    break;
+                default:
+                    break;
             }
+           
         }
         private void ProcessShipPlacements(ShipPlacementMode spMode)
         {

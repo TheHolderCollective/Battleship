@@ -31,11 +31,7 @@ namespace BattleshipGame.Objects.Display
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
-                    PlayRound();
-                    UpdateGameboard();
-                    UpdateFiringBoard();
-                    UpdateBattleResults();
-                    UpdateStatusboards();
+                    UpdateGamePlayOutputs();
                     break;
                 case DisplayMode.ShipPlacement:
                     switch (shipPlacementMode)
@@ -63,6 +59,8 @@ namespace BattleshipGame.Objects.Display
         {
             switch (displayMode)
             {
+                case DisplayMode.MainMenu:
+
                 case DisplayMode.ShipPlacement:
                     if (gamePlayer1.ShipLocations.Count == GameConstants.ShipTotal)
                     {

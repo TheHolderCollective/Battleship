@@ -1,8 +1,6 @@
-﻿using BattleshipGame.Extensions;
-using BattleshipGame.Objects.GameMenu;
+﻿using BattleshipGame.Objects.GameMenu;
 using Spectre.Console;
 using System;
-using System.ComponentModel;
 
 namespace BattleshipGame.Objects.Display
 {
@@ -38,14 +36,18 @@ namespace BattleshipGame.Objects.Display
         }
         private void ProcessUpdates(LiveDisplayContext ctx)
         {
-            // test code to be replaced
-            bool continuePlaying = true;
+            bool continueGame = true;
 
-            while (continuePlaying)
+            while (continueGame)
             {
                 if (Console.KeyAvailable)
                 {
                     ConsoleKey keyPressed = Console.ReadKey(true).Key;
+                    if (keyPressed == ConsoleKey.Escape)
+                    {
+                        continueGame = false;
+                    }
+
                     ProcessPlayerInputs(keyPressed);
                     ctx.Refresh();
                 }
@@ -90,7 +92,6 @@ namespace BattleshipGame.Objects.Display
         {
             MainMenuItems mainMenuItem = mainMenu.GetSelectedItem();
 
-            // update this code to take into account all options
             switch (mainMenuItem)
             {
                 case MainMenuItems.NewGame: // figure out how to reset game for new game option

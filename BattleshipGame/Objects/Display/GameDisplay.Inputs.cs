@@ -78,7 +78,6 @@ namespace BattleshipGame.Objects.Display
             }
             ActivateMainMenuMode();
         }
-
         private void ProcessInputF2Key(DisplayMode displayMode)
         {
             switch (displayMode)
@@ -116,9 +115,12 @@ namespace BattleshipGame.Objects.Display
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
-                    gamePlayer1.MoveCrosshairs(Direction.Up);
-                    UpdateFiringBoard();
-                    UpdateTargetInfo();
+                    if (gameStatus != GameStatus.GameOver)
+                    {
+                        gamePlayer1.MoveCrosshairs(Direction.Up);
+                        UpdateFiringBoard();
+                        UpdateTargetInfo();
+                    }
                     break;
                 case DisplayMode.MainMenu:
                     MainMenuSelectPrevious();
@@ -148,9 +150,12 @@ namespace BattleshipGame.Objects.Display
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
-                    gamePlayer1.MoveCrosshairs(Direction.Down);
-                    UpdateFiringBoard();
-                    UpdateTargetInfo();
+                    if (gameStatus != GameStatus.GameOver)
+                    {
+                        gamePlayer1.MoveCrosshairs(Direction.Down);
+                        UpdateFiringBoard();
+                        UpdateTargetInfo();
+                    }
                     break;
                 case DisplayMode.MainMenu:
                     MainMenuSelectNext();
@@ -180,9 +185,12 @@ namespace BattleshipGame.Objects.Display
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
-                    gamePlayer1.MoveCrosshairs(Direction.Left);
-                    UpdateFiringBoard();
-                    UpdateTargetInfo();
+                    if (gameStatus != GameStatus.GameOver)
+                    {
+                        gamePlayer1.MoveCrosshairs(Direction.Left);
+                        UpdateFiringBoard();
+                        UpdateTargetInfo();
+                    }
                     break;
                 case DisplayMode.ShipPlacement:
                     switch (shipPlacementMode)
@@ -208,9 +216,12 @@ namespace BattleshipGame.Objects.Display
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
-                    gamePlayer1.MoveCrosshairs(Direction.Right);
-                    UpdateFiringBoard();
-                    UpdateTargetInfo();
+                    if (gameStatus != GameStatus.GameOver)
+                    {
+                        gamePlayer1.MoveCrosshairs(Direction.Right);
+                        UpdateFiringBoard();
+                        UpdateTargetInfo();
+                    }
                     break;
                 case DisplayMode.ShipPlacement:
                     switch (shipPlacementMode)

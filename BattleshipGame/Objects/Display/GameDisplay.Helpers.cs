@@ -68,7 +68,7 @@ namespace BattleshipGame.Objects.Display
         }
         private void ResetLayoutsForRestart()
         {
-            SetupPlayers(); // check to see if this works
+            SetupPlayers(); // players need to be setup again for restart
             UpdateShipPlacementGameboard();
             UpdateShipPlacementInfo();
             UpdateGameboard();

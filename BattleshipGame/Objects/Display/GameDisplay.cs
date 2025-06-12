@@ -97,13 +97,14 @@ namespace BattleshipGame.Objects.Display
 
             switch (mainMenuItem)
             {
-                case MainMenuItems.NewGame: // figure out how to reset game for new game option
+                case MainMenuItems.NewGame:
                     switch (gameStatus)
                     {
                         case GameStatus.NotStarted:
-                            SetGameStatus(GameStatus.ShipPlacementInProgress);
                             ActivateShipPlacementMode();
                             break;
+                        case GameStatus.SuspendedShipPlacement:
+                        case GameStatus.SuspendedBattle:
                         case GameStatus.Restart:
                             ResetLayoutsForRestart();
                             ActivateShipPlacementMode();
@@ -116,11 +117,9 @@ namespace BattleshipGame.Objects.Display
                     switch (gameStatus)
                     {
                         case GameStatus.SuspendedShipPlacement:
-                            SetGameStatus(GameStatus.ShipPlacementInProgress);
                             ActivateShipPlacementMode();
                             break;
                         case GameStatus.SuspendedBattle:
-                            SetGameStatus(GameStatus.BattleInProgress);
                             ActivateGamePlayMode();
                             break;
                         default:
@@ -128,7 +127,7 @@ namespace BattleshipGame.Objects.Display
                     }
                     break;
                 case MainMenuItems.ExitGame:
-                    System.Environment.Exit(0);
+                    Environment.Exit(0);
                     break;
                 default:
                     break;

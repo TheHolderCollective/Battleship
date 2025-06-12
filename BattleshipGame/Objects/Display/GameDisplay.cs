@@ -19,16 +19,19 @@ namespace BattleshipGame.Objects.Display
         private Menu mainMenu;
         private Menu shipMenu;
 
-        public GameDisplay(Player player1, Player player2)
+        public GameDisplay()
         {
-            // Note - players and menus have to be setup before layouts can be created
-            SetupPlayers(player1, player2);
+            SetupPlayers();
             CreateMenus();
-            CreateGameLayouts();
-            SetDisplayMode(DisplayMode.MainMenu);
             SetGameStatus(GameStatus.NotStarted);
+            SetDisplayMode(DisplayMode.MainMenu);
+            CreateGameLayouts();
         }
-        public void ShowDisplay()
+        public void PlayGame()
+        {
+            ShowDisplay();
+        }
+        private void ShowDisplay()
         {
             SetupConsole();
             SetupLiveDisplay(gameLayout);
@@ -36,16 +39,16 @@ namespace BattleshipGame.Objects.Display
         }
         private void ProcessUpdates(LiveDisplayContext ctx)
         {
-            bool continueGame = true;
+            bool continueDisplay = true;
 
-            while (continueGame)
+            while (continueDisplay)
             {
                 if (Console.KeyAvailable)
                 {
                     ConsoleKey keyPressed = Console.ReadKey(true).Key;
                     if (keyPressed == ConsoleKey.Escape)
                     {
-                        continueGame = false;
+                        continueDisplay = false;
                     }
 
                     ProcessPlayerInputs(keyPressed);
@@ -95,8 +98,19 @@ namespace BattleshipGame.Objects.Display
             switch (mainMenuItem)
             {
                 case MainMenuItems.NewGame: // figure out how to reset game for new game option
-                    SetGameStatus(GameStatus.ShipPlacementInProgress);
-                    ActivateShipPlacementMode();
+                    switch (gameStatus)
+                    {
+                        case GameStatus.NotStarted:
+                            SetGameStatus(GameStatus.ShipPlacementInProgress);
+                            ActivateShipPlacementMode();
+                            break;
+                        case GameStatus.Restart:
+                            ResetLayoutsForRestart();
+                            ActivateShipPlacementMode();
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case MainMenuItems.ResumeGame:
                     switch (gameStatus)
@@ -108,8 +122,6 @@ namespace BattleshipGame.Objects.Display
                         case GameStatus.SuspendedBattle:
                             SetGameStatus(GameStatus.BattleInProgress);
                             ActivateGamePlayMode();
-                            break;
-                        case GameStatus.GameOver:
                             break;
                         default:
                             break;

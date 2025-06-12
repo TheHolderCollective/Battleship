@@ -9,10 +9,10 @@ namespace BattleshipGame.Objects.Display
     public partial class GameDisplay
     {
         #region Helpers for constructor
-        private void SetupPlayers(Player player1, Player player2)
+        private void SetupPlayers()
         {
-            gamePlayer1 = player1;
-            gamePlayer2 = player2;
+            gamePlayer1 = new Player("Challenger");
+            gamePlayer2 = new Player("General Supreme");
             gamePlayer2.PlaceShipsRandomly();
         }
         private void CreateMenus()
@@ -65,6 +65,17 @@ namespace BattleshipGame.Objects.Display
                 ctx.Refresh();
                 ProcessUpdates(ctx);
             });
+        }
+        private void ResetLayoutsForRestart()
+        {
+            SetupPlayers(); // check to see if this works
+            UpdateShipPlacementGameboard();
+            UpdateShipPlacementInfo();
+            UpdateGameboard();
+            UpdateFiringBoard();
+            UpdateStatusboards();
+            UpdateBattleResults();
+            UpdateTargetInfo();
         }
         #endregion
 

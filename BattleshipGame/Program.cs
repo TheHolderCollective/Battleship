@@ -1,4 +1,4 @@
-﻿using BattleshipGame.Objects.Games;
+﻿using BattleshipGame.Objects.Display;
 using System;
 
 namespace BattleshipGame
@@ -9,8 +9,8 @@ namespace BattleshipGame
         {
             try
             {
-                Game battleshipGame = new Game();
-                battleshipGame.PlayGame();
+                GameDisplay battleshipDisplay = new GameDisplay();
+                battleshipDisplay.PlayGame();
             }
             catch (Exception ex)
             {

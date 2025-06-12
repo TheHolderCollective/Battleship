@@ -14,6 +14,7 @@ namespace BattleshipGame.Objects.Display
                 case DisplayMode.GamePlay:
                     if (gameStatus == GameStatus.GameOver)
                     {
+                        SetGameStatus(GameStatus.Restart);
                         ActivateMainMenuMode();
                     }
                     break;
@@ -70,7 +71,7 @@ namespace BattleshipGame.Objects.Display
                     SetGameStatus(GameStatus.SuspendedBattle);
                     break;
                 case GameStatus.GameOver:
-                    SetGameStatus(GameStatus.NotStarted);
+                    SetGameStatus(GameStatus.Restart);
                     break;
                 default:
                     break;

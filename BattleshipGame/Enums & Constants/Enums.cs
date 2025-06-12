@@ -124,5 +124,6 @@ namespace BattleshipGame
         BattleInProgress,
         SuspendedBattle,
         GameOver,
+        Restart
     }
 }

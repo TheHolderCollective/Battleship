@@ -10,17 +10,17 @@ namespace BattleshipGame.Objects.Games
         private Player Player2;
         private GameDisplay gameDisplay;
 
-        public Game()
-        {
-            Player1 = new Player("Challenger");
-            Player2 = new Player("General Supreme");
-            gameDisplay = new GameDisplay(Player1, Player2); 
-        }
+        //public Game()
+        //{
+        //    Player1 = new Player("Challenger");
+        //    Player2 = new Player("General Supreme");
+        //    gameDisplay = new GameDisplay(Player1, Player2); 
+        //}
 
-        public void PlayGame()
-        {
-            gameDisplay.ShowDisplay();
-        } 
+        //public void PlayGame()
+        //{
+        //    gameDisplay.ShowDisplay();
+        //} 
 
     }
 }

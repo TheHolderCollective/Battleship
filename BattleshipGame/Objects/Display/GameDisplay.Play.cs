@@ -2,16 +2,10 @@
 {
     public partial class GameDisplay
     {
-        private void PlayRound() // figure out how to end game right after computer wins
+        private void PlayRound() 
         {
             if (gamePlayer1.IsShotAvailable() && gameStatus != GameStatus.GameOver)
             {
-                if (gamePlayer1.HasLost)
-                {
-                    SetGameStatus(GameStatus.GameOver);
-                    victoriousPlayer = gamePlayer2;
-                    return;
-                }
                 FireShotHumanPlayer();
 
                 if (gamePlayer2.HasLost)
@@ -20,7 +14,16 @@
                     victoriousPlayer = gamePlayer1;
                     return;
                 }
+
                 FireShotComputerPlayer();
+
+                if (gamePlayer1.HasLost)
+                {
+                    SetGameStatus(GameStatus.GameOver);
+                    victoriousPlayer = gamePlayer2;
+                    return;
+                }
+
             }
         }
 

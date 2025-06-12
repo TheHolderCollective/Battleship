@@ -146,7 +146,6 @@ namespace BattleshipGame.Objects.Display
         }
         private Layout CreateTipsLayout(string layoutName, string keyboardTips)
         {
-            // TODO Find a way to pull in keyboard tips
             var tipsLayout = new Layout(layoutName);
             var tipsText = keyboardTips;
             var tipsMarkup = new Markup(tipsText.ToString()).LeftJustified();

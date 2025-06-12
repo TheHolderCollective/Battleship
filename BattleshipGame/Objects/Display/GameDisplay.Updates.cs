@@ -79,6 +79,8 @@ namespace BattleshipGame.Objects.Display
                     resultsPanel = CreateResultsPanelForGameOver(victoriousPlayer);
                     gameLayout["Results"].Update(resultsPanel);
                     break;
+                case GameStatus.SuspendedBattle:
+                case GameStatus.SuspendedShipPlacement:
                 case GameStatus.Restart:
                     resultsPanel = CreateResultsPanelForBattleUpdates(gamePlayer1, gamePlayer2);
                     gameLayout["Results"].Update(resultsPanel);

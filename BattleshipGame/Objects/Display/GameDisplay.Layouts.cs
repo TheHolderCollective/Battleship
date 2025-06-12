@@ -128,7 +128,7 @@ namespace BattleshipGame.Objects.Display
         {
             var resultsLayout = CreateResultsLayout();
             var targetInfoLayout = CreateTargetInfoLayout();
-            var tipsLayout = CreateTipsLayout();
+            var tipsLayout = CreateTipsLayout("GamePlayTips",GameConstants.GamePlayKeyboardTips);
 
             var gameInfoLayout = new Layout("GameInfo").SplitColumns(resultsLayout, tipsLayout, targetInfoLayout);
             gameInfoLayout.Size((int)LayoutSize.GameInfo);
@@ -144,11 +144,11 @@ namespace BattleshipGame.Objects.Display
             targetInfoLayout.Update(targetPanel);
             return targetInfoLayout;
         }
-        private Layout CreateTipsLayout()
+        private Layout CreateTipsLayout(string layoutName, string keyboardTips)
         {
             // TODO Find a way to pull in keyboard tips
-            var tipsLayout = new Layout("Tips");
-            var tipsText = "Keystroke tips go here.";
+            var tipsLayout = new Layout(layoutName);
+            var tipsText = keyboardTips;
             var tipsMarkup = new Markup(tipsText.ToString()).LeftJustified();
             var tipsPanel = new Panel(tipsMarkup).Expand().Header("Keyboard Tips").HeaderAlignment(Justify.Center);
 
@@ -223,7 +223,7 @@ namespace BattleshipGame.Objects.Display
         private Layout CreateShipPlacementInfoLayout()
         {
             var infoLayout = CreateShipPlacementUpdatesLayout();
-            var tipsLayout = CreateTipsLayout();
+            var tipsLayout = CreateTipsLayout("ShipPlacementTips",GameConstants.ShipPlacementKeyboardTips);
 
             var placementInfoLayout = new Layout("GameInfo").SplitColumns(infoLayout, tipsLayout);
             placementInfoLayout.Size((int)LayoutSize.GameInfo);

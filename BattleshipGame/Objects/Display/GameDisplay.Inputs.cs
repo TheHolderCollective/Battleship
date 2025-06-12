@@ -36,21 +36,15 @@ namespace BattleshipGame.Objects.Display
             switch (displayMode)
             {
                 case DisplayMode.GamePlay:
-                    UpdateGamePlayOutputs();
+                    UpdateGamePlayBoards();
                     break;
                 case DisplayMode.ShipPlacement:
-                    switch (shipPlacementMode)
+                    if (shipPlacementMode == ShipPlacementMode.PositionShip)
                     {
-                        case ShipPlacementMode.SelectShip:
-                            break;
-                        case ShipPlacementMode.PositionShip:
-                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-                            gamePlayer1.RotateShip(selectedShip);
-                            UpdateShipPlacementGameboard();
-                            UpdateShipPlacementInfo();
-                            break;
-                        default:
-                            break;
+                        ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+                        gamePlayer1.RotateShip(selectedShip);
+                        UpdateShipPlacementGameboard();
+                        UpdateShipPlacementInfo();
                     }
                     break;
                 default:
@@ -80,32 +74,20 @@ namespace BattleshipGame.Objects.Display
         }
         private void ProcessInputF2Key(DisplayMode displayMode)
         {
-            switch (displayMode)
+            if (displayMode == DisplayMode.ShipPlacement && (gamePlayer1.ShipLocations.Count == GameConstants.ShipTotal))
             {
-                case DisplayMode.ShipPlacement:
-                    if (gamePlayer1.ShipLocations.Count == GameConstants.ShipTotal)
-                    {
-                        ActivateGamePlayMode();
-                        UpdateGameboard();
-                    }
-                    break;
-                default:
-                    break;
+                ActivateGamePlayMode();
+                UpdateGameboard();
             }
         }
         private void ProcessInputF4Key(DisplayMode displayMode)
         {
-            switch (displayMode)
+            if (displayMode == DisplayMode.ShipPlacement)
             {
-                case DisplayMode.ShipPlacement:
-                    gamePlayer1.PlaceShipsRandomly();
-                    UpdateShipPlacementGameboard();
-                    UpdateShipPlacementInfo();
-                    break;
-                default:
-                    break;
+                gamePlayer1.PlaceShipsRandomly();
+                UpdateShipPlacementGameboard();
+                UpdateShipPlacementInfo();
             }
-
         }
         #endregion
 

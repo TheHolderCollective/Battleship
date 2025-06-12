@@ -87,7 +87,7 @@ namespace BattleshipGame.Objects.Display
                     break;
             }
         }
-        private void UpdateGamePlayOutputs()
+        private void UpdateGamePlayBoards()
         {
             PlayRound();
             UpdateGameboard();

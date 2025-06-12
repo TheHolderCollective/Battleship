@@ -1,5 +1,4 @@
-﻿using BattleshipGame;
-using BattleshipGame.Extensions;
+﻿using BattleshipGame.Extensions;
 using System.ComponentModel;
 
 namespace BattleshipGame.Objects.Boards

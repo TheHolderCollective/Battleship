@@ -21,12 +21,5 @@ namespace BattleshipGame.Objects.Boards
                 }
             }
         }
-
-        // remove this if not used
-        public GameBoardPanel GetGameBoardPanelAt(Coordinates coords)
-        {
-            int listIndex = (coords.Row - 1) * 10 + (coords.Column - 1);
-            return Panels[listIndex];
-        }
     }
 }

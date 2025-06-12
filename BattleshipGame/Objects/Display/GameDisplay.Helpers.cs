@@ -71,6 +71,7 @@ namespace BattleshipGame.Objects.Display
             SetupPlayers(); // players need to be setup again for restart
             UpdateShipPlacementGameboard();
             UpdateShipPlacementInfo();
+            UpdateShipSelectionMenu();
             UpdateGameboard();
             UpdateFiringBoard();
             UpdateStatusboards();

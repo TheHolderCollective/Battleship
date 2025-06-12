@@ -81,6 +81,14 @@ namespace BattleshipGame.Objects.GameMenu
         {
             return (MainMenuItems)CurrentItemIndex;
         }
+
+        public void Reset()
+        {
+            menuItemList[CurrentItemIndex].IsSelected = false;
+            CurrentItemIndex = 0;
+            menuItemList[0].IsSelected = true;
+        }
+
         private string CreateMenuMarkup()
         {
             string verticalSpacing = "\n\n\n";

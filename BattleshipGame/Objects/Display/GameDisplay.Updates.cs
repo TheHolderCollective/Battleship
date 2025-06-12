@@ -1,9 +1,7 @@
 ﻿using Spectre.Console;
-using System.Linq;
 using System;
 using System.Text;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace BattleshipGame.Objects.Display
 {
@@ -96,6 +94,12 @@ namespace BattleshipGame.Objects.Display
             UpdateFiringBoard();
             UpdateBattleResults();
             UpdateStatusboards();
+        }
+
+        private void UpdateShipSelectionMenu()
+        {
+            shipMenu.Reset(); 
+            gameLayout["ShipPlacementMenu"].Update(shipMenu.GetMenuAsPanel());
         }
         private ShipType GetShipType(string shipName)
         {

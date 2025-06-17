@@ -27,9 +27,7 @@ namespace BattleshipGame.Objects.GameMenu
                 menuItemList.Add(menuItem);
             }
 
-            // select first item by default
-            menuItemList[0].IsSelected = true;
-            CurrentItemIndex = 0;
+            SetFirstItemAsSelected();
         }
 
         public void AddMenuItem(MenuItem item)
@@ -85,8 +83,13 @@ namespace BattleshipGame.Objects.GameMenu
         public void Reset()
         {
             menuItemList[CurrentItemIndex].IsSelected = false;
-            CurrentItemIndex = 0;
+            SetFirstItemAsSelected();
+        }
+
+        private void SetFirstItemAsSelected()
+        {
             menuItemList[0].IsSelected = true;
+            CurrentItemIndex = 0;
         }
 
         private string CreateMenuMarkup()

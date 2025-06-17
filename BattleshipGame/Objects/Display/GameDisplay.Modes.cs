@@ -6,13 +6,13 @@ namespace BattleshipGame.Objects.Display
     {
         private void ActivateMainMenuMode()
         {
-            DeactivateAllLayouts();
+            DeactivateAllLayoutsExceptTitleLayout();
             gameLayout["StartScreen"].Visible();
             SetDisplayMode(DisplayMode.MainMenu);
         }
         private void ActivateShipPlacementMode()
         {
-            DeactivateAllLayouts();
+            DeactivateAllLayoutsExceptTitleLayout();
             gameLayout["ShipPlacementBoard"].Visible();
             SetDisplayMode(DisplayMode.ShipPlacement);
             SetShipPlacementMode(ShipPlacementMode.SelectShip);
@@ -20,7 +20,7 @@ namespace BattleshipGame.Objects.Display
         }
         private void ActivateGamePlayMode()
         {
-            DeactivateAllLayouts();
+            DeactivateAllLayoutsExceptTitleLayout();
             gameLayout["GameBoard"].Visible();
             SetDisplayMode(DisplayMode.GamePlay);
             SetGameStatus(GameStatus.BattleInProgress);

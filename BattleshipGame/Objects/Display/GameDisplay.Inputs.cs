@@ -99,9 +99,7 @@ namespace BattleshipGame.Objects.Display
                 case DisplayMode.GamePlay:
                     if (gameStatus != GameStatus.GameOver)
                     {
-                        gamePlayer1.MoveCrosshairs(Direction.Up);
-                        UpdateFiringBoard();
-                        UpdateTargetInfo();
+                        UpdateCrosshairsPosition(Direction.Up);
                     }
                     break;
                 case DisplayMode.MainMenu:
@@ -114,10 +112,7 @@ namespace BattleshipGame.Objects.Display
                             ShipMenuSelectPrevious();
                             break;
                         case ShipPlacementMode.PositionShip:
-                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-                            gamePlayer1.MoveShip(selectedShip, Direction.Up);
-                            UpdateShipPlacementGameboard();
-                            UpdateShipPlacementInfo();
+                            UpdateShipPosition(Direction.Up);
                             break;
                         default:
                             break;
@@ -134,9 +129,7 @@ namespace BattleshipGame.Objects.Display
                 case DisplayMode.GamePlay:
                     if (gameStatus != GameStatus.GameOver)
                     {
-                        gamePlayer1.MoveCrosshairs(Direction.Down);
-                        UpdateFiringBoard();
-                        UpdateTargetInfo();
+                        UpdateCrosshairsPosition(Direction.Down);
                     }
                     break;
                 case DisplayMode.MainMenu:
@@ -149,10 +142,7 @@ namespace BattleshipGame.Objects.Display
                             ShipMenuSelectNext();
                             break;
                         case ShipPlacementMode.PositionShip:
-                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-                            gamePlayer1.MoveShip(selectedShip, Direction.Down);
-                            UpdateShipPlacementGameboard();
-                            UpdateShipPlacementInfo();
+                            UpdateShipPosition(Direction.Down);
                             break;
                         default:
                             break;
@@ -169,24 +159,13 @@ namespace BattleshipGame.Objects.Display
                 case DisplayMode.GamePlay:
                     if (gameStatus != GameStatus.GameOver)
                     {
-                        gamePlayer1.MoveCrosshairs(Direction.Left);
-                        UpdateFiringBoard();
-                        UpdateTargetInfo();
+                        UpdateCrosshairsPosition(Direction.Left);
                     }
                     break;
                 case DisplayMode.ShipPlacement:
-                    switch (shipPlacementMode)
+                    if (shipPlacementMode == ShipPlacementMode.PositionShip)
                     {
-                        case ShipPlacementMode.SelectShip:
-                            break;
-                        case ShipPlacementMode.PositionShip:
-                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-                            gamePlayer1.MoveShip(selectedShip, Direction.Left);
-                            UpdateShipPlacementGameboard();
-                            UpdateShipPlacementInfo();
-                            break;
-                        default:
-                            break;
+                        UpdateShipPosition(Direction.Left);
                     }
                     break;
                 default:
@@ -200,24 +179,13 @@ namespace BattleshipGame.Objects.Display
                 case DisplayMode.GamePlay:
                     if (gameStatus != GameStatus.GameOver)
                     {
-                        gamePlayer1.MoveCrosshairs(Direction.Right);
-                        UpdateFiringBoard();
-                        UpdateTargetInfo();
+                        UpdateCrosshairsPosition(Direction.Right);
                     }
                     break;
                 case DisplayMode.ShipPlacement:
-                    switch (shipPlacementMode)
+                    if (shipPlacementMode == ShipPlacementMode.PositionShip)
                     {
-                        case ShipPlacementMode.SelectShip:
-                            break;
-                        case ShipPlacementMode.PositionShip:
-                            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
-                            gamePlayer1.MoveShip(selectedShip, Direction.Right);
-                            UpdateShipPlacementGameboard();
-                            UpdateShipPlacementInfo();
-                            break;
-                        default:
-                            break;
+                        UpdateShipPosition(Direction.Right);
                     }
                     break;
                 default:

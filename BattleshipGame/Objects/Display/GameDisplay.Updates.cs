@@ -101,6 +101,21 @@ namespace BattleshipGame.Objects.Display
             shipMenu.Reset(); 
             gameLayout["ShipPlacementMenu"].Update(shipMenu.GetMenuAsPanel());
         }
+
+        private void UpdateCrosshairsPosition(Direction crosshairsDirection)
+        {
+            gamePlayer1.MoveCrosshairs(crosshairsDirection);
+            UpdateFiringBoard();
+            UpdateTargetInfo();
+        }
+
+        private void UpdateShipPosition(Direction shipDirection)
+        {
+            ShipType selectedShip = GetShipType(shipMenu.SelectedItemName);
+            gamePlayer1.MoveShip(selectedShip, shipDirection);
+            UpdateShipPlacementGameboard();
+            UpdateShipPlacementInfo();
+        }
         private ShipType GetShipType(string shipName)
         {
             ShipType shipType;

@@ -15,9 +15,8 @@ namespace BattleshipGame.Objects.Display
             var gameLayout = new Layout().SplitRows(titleLayout, boardLayout, startScreenLayout, shipPlacementLayout);
             return gameLayout;
         }
-        private void DeactivateAllLayouts()
+        private void DeactivateAllLayoutsExceptTitleLayout()
         {   
-            // Title layout should always be visible and therefore is never deactivated. 
             gameLayout["StartScreen"].Invisible();
             gameLayout["GameBoard"].Invisible();
             gameLayout["ShipPlacementBoard"].Invisible();
@@ -48,9 +47,10 @@ namespace BattleshipGame.Objects.Display
             var mainMenuLayout = CreateMainMenuLayout();
             var menuLeftBorderLayout = CreateMenuBorderLayout("MenuLeftBorder");
             var menuRightBorderLayout = CreateMenuBorderLayout("MenuRightBorder");
+            var menuBodyAndBorderLayout = new Layout("Menu").SplitColumns(menuLeftBorderLayout, mainMenuLayout, menuRightBorderLayout);
             var footerLayout = CreateFooterLayout();
 
-            var startScreenLayout = new Layout("StartScreen").SplitRows(new Layout("Menu").SplitColumns(menuLeftBorderLayout, mainMenuLayout, menuRightBorderLayout), footerLayout);
+            var startScreenLayout = new Layout("StartScreen").SplitRows(menuBodyAndBorderLayout, footerLayout);
             return startScreenLayout;
         }
         private Layout CreateGameBoardLayout()

@@ -26,7 +26,6 @@
 
             }
         }
-
         private void FireShotHumanPlayer()
         {
             var coordinates = gamePlayer1.FireManualShot();

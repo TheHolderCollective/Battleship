@@ -2,7 +2,7 @@
 
 This is a console version of battleship built using the Spectre.Console library.
 
-This game uses the models from: [Battleship Modelling Practice](https://github.com/exceptionnotfound/BattleshipModellingPractice)
+This game uses the models from [Battleship Modelling Practice](https://github.com/exceptionnotfound/BattleshipModellingPractice)
 
 
 

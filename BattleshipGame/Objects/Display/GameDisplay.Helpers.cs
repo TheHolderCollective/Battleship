@@ -45,9 +45,12 @@ namespace BattleshipGame.Objects.Display
         private void SetupConsole()
         {
             // TODO Fix issues with window sizing which appear when game is launched using a maximized console
+            decimal windowWidthScaleFactor = Decimal.Parse(Properties.Resources.WindowWidthScaleFactor);
+            decimal windowHeightScaleFactor = Decimal.Parse(Properties.Resources.WindowHeightScaleFactor);
+
             AnsiConsole.Clear();
-            Console.WindowWidth = (int)((decimal)WindowDimensions.Width * GameConstants.WindowWidthScaleFactor);
-            Console.WindowHeight = (int)((decimal)WindowDimensions.Height * GameConstants.WindowHeightScaleFactor);
+            Console.WindowWidth = (int)((decimal)WindowDimensions.Width * windowWidthScaleFactor);
+            Console.WindowHeight = (int)((decimal)WindowDimensions.Height * windowHeightScaleFactor);
             Console.CursorVisible = false;
         }
         private void SetupLiveDisplay(Layout layout)

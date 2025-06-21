@@ -74,7 +74,9 @@ namespace BattleshipGame.Objects.Display
         }
         private void ProcessInputF2Key(DisplayMode displayMode)
         {
-            if (displayMode == DisplayMode.ShipPlacement && (gamePlayer1.ShipLocations.Count == GameConstants.ShipTotal))
+            int shipTotal = Int32.Parse(Properties.Resources.ShipsTotal);
+
+            if (displayMode == DisplayMode.ShipPlacement && (gamePlayer1.ShipLocations.Count == shipTotal))
             {
                 ActivateGamePlayMode();
                 UpdateGameboard();

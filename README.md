@@ -1,8 +1,6 @@
 # Battleship Game
 
-This is a console version of battleship built using the Spectre.Console library.
-
-This game uses and extends the models from this [project](https://github.com/exceptionnotfound/BattleshipModellingPractice).
+This is a console version of battleship built using the Spectre.Console library. This game uses and extends the models from this [project](https://github.com/exceptionnotfound/BattleshipModellingPractice).
 
 Blog Post: [Building Battleship - Part I](https://theholdercollective.github.io/posts/Building-Battleship-Part-1/)
 

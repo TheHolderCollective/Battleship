@@ -79,7 +79,7 @@ namespace BattleshipGame.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1.27.
+        ///   Looks up a localized string similar to 1.28.
         /// </summary>
         internal static string WindowWidthScaleFactor {
             get {

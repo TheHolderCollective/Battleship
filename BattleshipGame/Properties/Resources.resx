@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="WindowWidthScaleFactor" xml:space="preserve">
-    <value>1.27</value>
+    <value>1.28</value>
   </data>
   <data name="ShipsTotal" xml:space="preserve">
     <value>5</value>

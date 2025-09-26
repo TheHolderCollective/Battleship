@@ -1,5 +1,6 @@
-﻿using System;
+﻿using BattleshipGame.Objects.Players;
 using Spectre.Console;
+using System;
 
 namespace BattleshipGame.Objects.Display
 {

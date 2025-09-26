@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using BattleshipGame.Objects.GameMenu;
+using BattleshipGame.Objects.Players;
 using Spectre.Console;
 
 namespace BattleshipGame.Objects.Display
@@ -11,9 +12,8 @@ namespace BattleshipGame.Objects.Display
         #region Helpers for constructor
         private void SetupPlayers()
         {
-            gamePlayer1 = new Player("Challenger");
-            gamePlayer2 = new Player("General Supreme");
-            gamePlayer2.PlaceShipsRandomly();
+            gamePlayer1 = new HumanPlayer("Challenger");
+            gamePlayer2 = new AIPlayer("General Supreme");
         }
         private void CreateMenus()
         {

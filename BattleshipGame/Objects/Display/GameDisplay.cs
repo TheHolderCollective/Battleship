@@ -1,4 +1,5 @@
 ﻿using BattleshipGame.Objects.GameMenu;
+using BattleshipGame.Objects.Players;
 using Spectre.Console;
 using System;
 
@@ -8,7 +9,8 @@ namespace BattleshipGame.Objects.Display
     {
         private Layout gameLayout;
         private LiveDisplay liveDisplay;
-        private Player gamePlayer1;
+       
+        private HumanPlayer gamePlayer1;
         private Player gamePlayer2;
         private Player victoriousPlayer;
 

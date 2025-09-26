@@ -93,7 +93,9 @@
     <Compile Include="Objects\Menu\Menu.cs" />
     <Compile Include="Objects\Menu\MenuItem.cs" />
     <Compile Include="Objects\Menu\MenuItemLists.cs" />
-    <Compile Include="Objects\Player.cs" />
+    <Compile Include="Objects\Players\AIPlayer.cs" />
+    <Compile Include="Objects\Players\HumanPlayer.cs" />
+    <Compile Include="Objects\Players\Player.cs" />
     <Compile Include="Objects\Ships\Battleship.cs" />
     <Compile Include="Objects\Ships\Carrier.cs" />
     <Compile Include="Objects\Ships\Cruiser.cs" />

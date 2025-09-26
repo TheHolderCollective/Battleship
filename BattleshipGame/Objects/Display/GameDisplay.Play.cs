@@ -1,4 +1,6 @@
-﻿namespace BattleshipGame.Objects.Display
+﻿using BattleshipGame.Objects.Players;
+
+namespace BattleshipGame.Objects.Display
 {
     public partial class GameDisplay
     {
@@ -6,7 +8,7 @@
         {
             if (gamePlayer1.IsShotAvailable() && gameStatus != GameStatus.GameOver)
             {
-                FireShotHumanPlayer();
+                FireShotAtOpponent(gamePlayer1, gamePlayer2);
 
                 if (gamePlayer2.HasLost)
                 {
@@ -15,7 +17,7 @@
                     return;
                 }
 
-                FireShotComputerPlayer();
+                FireShotAtOpponent(gamePlayer2, gamePlayer1);
 
                 if (gamePlayer1.HasLost)
                 {
@@ -26,18 +28,11 @@
 
             }
         }
-        private void FireShotHumanPlayer()
+        private void FireShotAtOpponent(Player firingPlayer, Player opponent)
         {
-            var coordinates = gamePlayer1.FireManualShot();
-            var result = gamePlayer2.ProcessShot(coordinates);
-            gamePlayer1.ProcessShotResult(coordinates, result);
-        }
-
-        private void FireShotComputerPlayer()
-        {
-           var coordinates = gamePlayer2.FireAutoShot();
-           var result = gamePlayer1.ProcessShot(coordinates);
-           gamePlayer2.ProcessShotResult(coordinates, result);
+            var coordinates = firingPlayer.FireShot();
+            var result = opponent.ProcessShot(coordinates);
+            firingPlayer.ProcessShotResult(coordinates, result);
         }
     }
 }

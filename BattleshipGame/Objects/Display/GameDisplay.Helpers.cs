@@ -129,7 +129,6 @@ namespace BattleshipGame.Objects.Display
         {
             StringBuilder flattenedGameBoard = new StringBuilder();
             int gameBoardSize = (int)BoardDimensions.Width;
-            //var gameBoard = player.OutputGameBoard();
             var gameBoard = player.OutputGameBoard(GameBoardType.Gameboard);
             string padding = "  ";
 
@@ -152,7 +151,6 @@ namespace BattleshipGame.Objects.Display
         {
             StringBuilder flattenedFiringBoard = new StringBuilder();
             int gameBoardSize = (int)BoardDimensions.Width;
-            //var firingBoard = player.OutputFiringBoard();
             var firingBoard = player.OutputGameBoard(GameBoardType.Firingboard);
             string padding = "  ";
 

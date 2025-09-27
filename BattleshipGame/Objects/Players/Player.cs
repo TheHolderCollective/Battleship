@@ -1,9 +1,9 @@
-﻿using BattleshipGame.Extensions;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using BattleshipGame.Extensions;
 using BattleshipGame.Objects.Boards;
 using BattleshipGame.Objects.Ships;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 
 namespace BattleshipGame.Objects.Players
@@ -35,7 +35,7 @@ namespace BattleshipGame.Objects.Players
                 return Ships.All(x => x.IsSunk);
             }
         }
-        
+
         public Player(string name)
         {
             Name = name;
@@ -52,45 +52,28 @@ namespace BattleshipGame.Objects.Players
             FiringBoard = new FiringBoard();
             ShipLocations = new List<ShipPlacements>();
             ShipPlacementLogs = new List<string>();
-           
             PriorOccupationType = FiringBoard.Panels.At(5, 5).OccupationType;
-
             RoundNumber = 0;
         }
-        public string[,] OutputGameBoard()
+
+        public string[,] OutputGameBoard(GameBoardType gameBoardType)
         {
             int boardWidth = (int)BoardDimensions.Width;
             int boardHeight = (int)BoardDimensions.Height;
 
             string[,] gameBoard = new string[boardWidth, boardHeight];
+            GameBoard selectedBoard = (gameBoardType == GameBoardType.Gameboard)? GameBoard: FiringBoard ;
 
             for (int row = 1; row <= boardWidth; row++)
             {
                 for (int height = 1; height <= boardHeight; height++)
                 {
-                    gameBoard[row - 1, height - 1] = GameBoard.Panels.At(row, height).Status + "  ";
+                    gameBoard[row - 1, height - 1] = selectedBoard.Panels.At(row, height).Status + "  ";
                 }
             }
             return gameBoard;
         }
 
-        public string[,] OutputFiringBoard()
-        {
-            int boardWidth = (int)BoardDimensions.Width;
-            int boardHeight = (int)BoardDimensions.Height;
-
-            string[,] firingBoard = new string[boardWidth, boardHeight];
-
-            for (int row = 1; row <= boardWidth; row++)
-            {
-                for (int height = 1; height <= boardHeight; height++)
-                {
-                    firingBoard[row - 1, height - 1] = FiringBoard.Panels.At(row, height).Status + "  ";
-                }
-            }
-            return firingBoard;
-
-        }
         public abstract Coordinates FireShot();
 
         public ShotResult ProcessShot(Coordinates coords)
@@ -218,7 +201,7 @@ namespace BattleshipGame.Objects.Players
                 }
             }
         }
-        
+
         private void UpdateShipPlacementLog()
         {
             ShipPlacementLogs.Clear();
@@ -227,7 +210,5 @@ namespace BattleshipGame.Objects.Players
                 ShipPlacementLogs.Add(location.PlacementLog);
             }
         }
-
     }
-
 }

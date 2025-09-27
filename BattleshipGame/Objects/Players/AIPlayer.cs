@@ -1,6 +1,6 @@
-﻿using BattleshipGame.Objects.Boards;
-using System;
+﻿using System;
 using System.Linq;
+using BattleshipGame.Objects.Boards;
 
 namespace BattleshipGame.Objects.Players
 {

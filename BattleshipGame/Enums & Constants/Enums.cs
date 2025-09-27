@@ -96,6 +96,12 @@ namespace BattleshipGame
         Vertical
     }
 
+    public enum GameBoardType
+    {
+        Gameboard,
+        Firingboard
+    }
+
     public enum ShipPlacementMode
     {
         SelectShip,
